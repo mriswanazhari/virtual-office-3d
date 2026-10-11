@@ -1,0 +1,2300 @@
+<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Virtual Office — KSC Monitoring</title><style>
+:root{font-family:Inter,system-ui,Arial,sans-serif;color:#e8effa;background:#0b1220}*{box-sizing:border-box}body{margin:0}button,input,select{font:inherit}button{cursor:pointer;border:1px solid #334359;border-radius:10px;padding:9px 13px;background:#1a2940;color:#e7f0ff}button:hover{background:#283a55}button.primary{background:#3772e9;border-color:#3772e9}header{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:15px 20px;border-bottom:1px solid #283449;flex-wrap:wrap}.brand{font-weight:800;font-size:18px}.sub{color:#96a9c3;font-size:12px;margin-top:4px}.layout{display:grid;grid-template-columns:252px minmax(0,1fr) 292px;min-height:calc(100vh - 72px)}aside{padding:18px;border-right:1px solid #283449}aside.right{border-right:none;border-left:1px solid #283449}.stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin:15px 0}.stat{background:#162439;padding:12px 4px;text-align:center;border-radius:12px}.stat b{font-size:22px;display:block}.stat small{font-size:10px;color:#9fb0c8}.section{font-size:11px;color:#8fa3bd;text-transform:uppercase;letter-spacing:.1em;margin:18px 0 9px}.object-list{max-height:calc(100vh - 355px);overflow:auto}.obj{display:flex;justify-content:space-between;gap:4px;align-items:center;width:100%;text-align:left;margin:3px 0;background:transparent;border-color:transparent;padding:8px}.obj.active{border-color:#497ed2;background:#1b3150}.dot{width:9px;height:9px;border-radius:50%;display:inline-block;margin-right:7px}.obj small{color:#94a9c7}.main{min-width:0;display:flex;flex-direction:column}.toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:11px 14px;background:#101d30;border-bottom:1px solid #29374a}.scene{position:relative;flex:1;min-height:590px;overflow:hidden;background:radial-gradient(ellipse at center,#22364c,#111b2a)}#view3d{width:100%;height:100%;display:block}.scene2d{overflow:auto;padding:20px;display:flex;align-items:flex-start;justify-content:center;min-height:620px}.plan{position:relative;width:min(100%,1000px);flex-shrink:0;aspect-ratio:860/370;box-shadow:0 16px 36px #0005;background:white;touch-action:none}.plan img{width:100%;height:100%;display:block;user-select:none;pointer-events:none}.pin{position:absolute;transform:translate(-50%,-50%);height:19px;min-width:19px;border:2px solid #fff;border-radius:50%;box-shadow:0 0 0 2px #121b27aa;cursor:grab;padding:0;color:#12131b;font-weight:900;font-size:9px}.pin.selected{outline:3px solid #387bff;z-index:3}.yellow{background:#ffe500}.orange{background:#ffb800}.purple{background:#ae31ab}.printer{background:#4a91da}.caption{position:absolute;left:10px;bottom:10px;background:#112139eb;padding:9px 12px;border-radius:9px;color:white;font-size:11px;pointer-events:none}label{display:block;font-size:12px;color:#b8c9df;margin:14px 0 5px}input,select{width:100%;border-radius:9px;padding:10px;background:#101e31;border:1px solid #33445a;color:#eaf2ff;outline:0}input:focus{border-color:#6297fd}.hint{line-height:1.55;color:#90a3bf;font-size:12px}.formactions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px}.legend{font-size:12px;color:#aec0d6;line-height:2}.hide{display:none!important}.tip{position:absolute;left:16px;top:16px;background:#142239dd;padding:10px;border-radius:10px;color:#c1d1e5;font-size:12px;pointer-events:none}@media(max-width:1100px){.layout{grid-template-columns:220px minmax(0,1fr)}aside.right{grid-column:1/-1;border-left:0;border-top:1px solid #283449}.object-list{max-height:420px}}@media(max-width:700px){.layout{display:block}aside{border-right:0;border-bottom:1px solid #283449}.scene{min-height:490px}.object-list{max-height:200px}.plan{min-width:580px}.scene2d{justify-content:flex-start}}
+ .animation-note{padding:10px 12px;border:1px solid #3b5672;border-radius:10px;background:#14273d;margin-top:14px}.range-row{display:flex;justify-content:space-between;align-items:center}.muted-note{font-size:11px;color:#8eabc7}input[type=range]{padding:0;height:18px;accent-color:#6da2ff}.pill-live{display:inline-block;padding:3px 7px;border-radius:8px;color:#dbeafe;background:#23446b;font-size:11px}
+
+/* Cartoon room v5 */
+body{background:#e9f0f7;color:#22334f}header{background:#ffffff!important;color:#20334e!important;border-bottom:1px solid #dce7ef!important}aside,.right{background:#ffffff!important;color:#24364e!important;border-color:#e1eaf2!important}.main{background:#eaf2f7!important}button{transition:.15s}button:hover{filter:brightness(1.08)}.floating-profile{position:absolute;left:50%;top:62px;transform:translateX(-50%);background:#fff;border:1px solid #e4eaf3;box-shadow:0 24px 48px rgba(53,73,109,.18);z-index:12;border-radius:20px;padding:16px 18px 14px;min-width:280px;max-width:320px;text-align:center;pointer-events:none}.floating-profile::after{content:'';position:absolute;left:50%;bottom:-12px;transform:translateX(-50%);border:12px solid transparent;border-top-color:#fff;filter:drop-shadow(0 4px 2px rgba(53,73,109,.08))}.floating-profile.hide{display:none}.profile-head{display:flex;flex-direction:column;align-items:center;gap:7px}.profile-avatar{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:22px;color:#203650;background:linear-gradient(135deg,#d8eef8,#9fd6e8);border:4px solid #fff;box-shadow:0 8px 18px rgba(62,95,132,.15);margin-top:-38px}.profile-name{display:block;color:#253a58;font-size:18px;font-weight:800;line-height:1.2}.profile-role{display:block;color:#77889b;font-size:13px;margin-top:2px}.profile-meta{display:flex;justify-content:center;gap:6px;flex-wrap:wrap;margin-top:10px}.profile-chip{padding:5px 9px;border-radius:999px;font-size:11px;font-weight:600}.profile-chip.online{background:#e7fbf1;color:#19945f}.profile-chip.offline{background:#fff0f2;color:#d55a72}.profile-chip.device{background:#eef4ff;color:#496dba}.profile-sub{display:block;color:#8a9aaa;font-size:12px;line-height:1.45;margin-top:10px}.profile-actions{display:flex;justify-content:center;gap:10px;margin-top:13px}.profile-actions i{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:#f3f7fc;color:#4c617d;font-style:normal;font-size:15px;border:1px solid #e1eaf3}.profile-actions i.primary{background:#e9f3ff;color:#2d67c7;border-color:#cfe1ff}.sub,.hint{color:#8191a4!important}.animation-note{background:#f4f8fe!important;border-color:#dbe6f5!important}.muted-note{color:#8492a6!important}aside strong,aside .section,aside .legend,aside .obj span,aside .obj small,aside label,aside .sub,aside .hint,.right strong,.right label,.right .sub,.right .hint{color:#24364e!important}.stats .stat{background:#243b5a!important;color:#eef5ff!important}.stats .stat b,.stats .stat small{color:#eef5ff!important}.obj{color:#24364e!important}.obj small{color:#6b7d93!important}.obj.active{background:#ddebff!important;border-color:#6a95db!important;color:#1f3554!important}input,select{background:#ffffff!important;color:#22334f!important;border:1px solid #cfddea!important}input::placeholder{color:#92a1b3!important}#search{background:#ffffff!important;color:#22334f!important;border:1px solid #cfddea!important}.right{box-shadow:inset 1px 0 0 #e1eaf2}.toolbar .sub,#viewHint{color:#50647d!important}
+
+.room-spacing{background:#f3f7fd;border:1px solid #dce6f3;border-radius:12px;padding:11px;margin:13px 0}
+.room-spacing strong{display:block;color:#223c5c;font-size:13px;margin-bottom:8px}
+.room-spacing label{margin:8px 0 4px!important}
+.room-spacing select{padding:8px}
+.room-spacing input[type=range]{width:100%!important;accent-color:#357bdc;background:transparent!important;border:0!important}
+.room-spacing .between{display:flex;justify-content:space-between;align-items:center;color:#47617f;font-size:12px}
+.room-spacing .value{font-weight:800;color:#235db4}
+.room-spacing .small{font-size:11px;color:#6d8299;line-height:1.5;margin-top:6px}
+
+/* v13: fixed viewport; only sidebars are independently scrollable */
+html,body{height:100%;height:100dvh;overflow:hidden!important}
+body{display:flex;flex-direction:column;min-height:0}
+header{flex:0 0 auto;position:relative;z-index:20}
+.layout{flex:1 1 auto;min-height:0!important;height:auto!important;overflow:hidden;grid-template-columns:252px minmax(0,1fr) 292px}
+.layout>aside{height:100%;min-height:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#b8cde4 transparent}
+.layout>aside::-webkit-scrollbar{width:8px}
+.layout>aside::-webkit-scrollbar-thumb{background:#b8cde4;border-radius:10px}
+.object-list{max-height:none!important;overflow:visible!important}
+.main{min-height:0;min-width:0;overflow:hidden;height:100%;display:flex;flex-direction:column}
+.toolbar{flex:0 0 auto;position:relative;z-index:4}
+.scene,.scene2d{min-height:0!important;height:100%;flex:1 1 auto;overflow:hidden}
+.scene2d{overflow:auto!important;overscroll-behavior:contain}
+#view3d{width:100%;height:100%;display:block}
+@media (max-width:1100px) and (min-width:701px){
+ .layout{grid-template-columns:220px minmax(0,1fr) 260px!important}
+ .layout>aside.right{grid-column:auto!important;border-left:1px solid #e1eaf2!important;border-top:0!important}
+}
+@media (max-width:700px){
+ .layout{display:grid!important;grid-template-columns:minmax(0,1fr)!important;grid-template-rows:minmax(105px,23%) minmax(190px,1fr) minmax(105px,23%);height:100%;min-height:0}
+ .layout>aside{min-height:0;height:100%;padding:10px 14px}
+ .layout>aside.right{grid-column:1!important;border-left:0!important;border-top:1px solid #e1eaf2!important}
+ .main{min-height:0;height:100%}
+ .scene,.scene2d{min-height:0!important}
+ .toolbar{padding:7px;gap:4px}
+ .toolbar button{padding:7px 9px}
+ .floating-profile{top:45px;min-width:220px;max-width:260px;padding:12px}
+}
+
+/* v14: Keep the complete profile card inside the 3D viewport. */
+.scene { position: relative; }
+.scene > .floating-profile {
+  position: absolute !important;
+  top: 16px !important;
+  left: 50% !important;
+  bottom: auto !important;
+  transform: translateX(-50%) !important;
+  box-sizing: border-box;
+  width: min(320px, calc(100% - 24px)) !important;
+  min-width: 0 !important;
+  max-width: calc(100% - 24px) !important;
+  max-height: calc(100% - 32px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  z-index: 30;
+  padding: 18px 16px 14px !important;
+  pointer-events: auto;
+  scrollbar-width: thin;
+}
+.scene > .floating-profile .profile-avatar {
+  margin-top: 0 !important;
+  width: 56px;
+  height: 56px;
+  flex: 0 0 auto;
+}
+.scene > .floating-profile::after { display: none; }
+@media (max-width: 700px) {
+  .scene > .floating-profile {
+    top: 10px !important;
+    max-height: calc(100% - 20px);
+    padding: 12px !important;
+  }
+}
+
+#liveMode.is-live{background:#0c8561;color:white;border-color:#0b7657}
+#monitorInfo{color:#42637e!important;font-size:11px}
+#liveMode:disabled{opacity:.5}
+
+/* v18: dismissible profile and independent collapsible right panel */
+.detail-heading{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:4px}
+.close-ui,.popup-close{width:32px;height:32px;min-width:32px;padding:0;display:grid;place-items:center;background:#eff4fa!important;color:#344761!important;border:1px solid #d7e4f0!important;border-radius:9px;font-size:22px;line-height:1;cursor:pointer}
+.close-ui:hover,.popup-close:hover{background:#dfeaff!important}
+.scene>.floating-profile{padding-top:42px!important}
+.scene>.floating-profile .popup-close{position:absolute;top:9px;right:9px;z-index:10;pointer-events:auto}
+.layout.detail-closed{grid-template-columns:252px minmax(0,1fr)!important}
+.layout.detail-closed>aside.right{display:none!important}
+@media(max-width:1100px) and (min-width:701px){.layout.detail-closed{grid-template-columns:220px minmax(0,1fr)!important}}
+@media(max-width:700px){.layout.detail-closed{grid-template-columns:minmax(0,1fr)!important;grid-template-rows:minmax(105px,23%) minmax(190px,1fr)!important}}
+/* v19 isometric polish */
+.scene{background:radial-gradient(ellipse at 50% 30%,#e7f1f9,#ccdce8)!important}
+.toolbar{background:#162b45!important;box-shadow:0 4px 15px #142a4030}
+#ambientToggle{border-color:#56708c;background:#233e59}
+#cameraHome{border-color:#56708c;background:#233e59}
+.scene>.tip{border-radius:10px;background:#17324ac9;font-size:11px;max-width:min(420px,80%)}
+@media(max-width:700px){#ambientToggle,#cameraHome{font-size:11px;padding:7px}}
+
+/* v29 COLORFUL DESIGN SYSTEM – purely visual, preserves editor and KSC behavior */
+:root{--color-blue:#246dff;--color-teal:#13bfa0;--color-purple:#9154f5;--color-coral:#ff755e;--color-amber:#ffb83d}
+body{background:#e8f4ff!important}
+header{background:linear-gradient(110deg,#ffffff 0%,#f0f7ff 54%,#e1efff 100%)!important;border-bottom:1px solid #bcdaf3!important;box-shadow:0 4px 24px #4478a112}
+.brand{color:#114a99!important;letter-spacing:-.35px}.brand span{color:#7453e9!important}
+.layout>aside{background:linear-gradient(172deg,#ffffff,#f0f8ff 59%,#f7f2ff)!important}
+.layout>aside.right{background:linear-gradient(175deg,#ffffff,#f3f8ff)!important}
+.main{background:#d8eafb!important}
+.scene{background:radial-gradient(ellipse at 50% 22%,#fbffff 0%,#dceefc 44%,#c0ddf5 100%)!important}
+.toolbar{background:linear-gradient(105deg,#112a5b,#123e66 64%,#1d3265)!important;box-shadow:0 6px 20px #0c32602d!important}
+.toolbar button{border-color:#4d749b!important;box-shadow:inset 0 1px #ffffff18}
+.toolbar button.primary,#mode3d.primary,#mode2d.primary{background:linear-gradient(135deg,#297dff,#5355ec)!important;border-color:#76b3ff!important;box-shadow:0 4px 14px #2b71f466!important}
+#liveMode.is-live{background:linear-gradient(135deg,#059c83,#14c799)!important;border-color:#55e6bb!important}
+.room-spacing{background:linear-gradient(150deg,#f3f9ff,#f6f2ff)!important;border-color:#d9e4fa!important;box-shadow:0 4px 16px #527aa110}
+.room-spacing:nth-of-type(even){background:linear-gradient(145deg,#eefdff,#f2f4ff)!important}
+.stats{gap:6px!important}
+.stats .stat{border:none!important;border-radius:13px!important;box-shadow:0 6px 16px #233f6021}
+.stats .stat:nth-child(1){background:linear-gradient(140deg,#307cf6,#3f54db)!important}
+.stats .stat:nth-child(2){background:linear-gradient(140deg,#14bc9c,#138d9e)!important}
+.stats .stat:nth-child(3){background:linear-gradient(140deg,#9861f5,#653cce)!important}
+#save,#saveAreaName,.primary{background:linear-gradient(135deg,#2777ff,#644dec)!important;border-color:#669cfc!important}
+#resetSpacing{background:linear-gradient(135deg,#14396c,#355886)!important}
+.obj.active{background:linear-gradient(100deg,#dbeeff,#e8ddff)!important;border-color:#906fff!important}
+#roomAreaEditor:focus,#spacingArea:focus,input:focus,select:focus{outline:2px solid #88b7ff;outline-offset:1px}
+.scene>.tip{background:#18375ddc!important;border:1px solid #9bd7ff50!important;box-shadow:0 6px 16px #19406a21}
+#panMode{background:#e8f3ff;border:1px solid #83b5ef;color:#1a548a;font-weight:700}
+#panMode.is-active{background:#0d9488!important;color:white!important;border-color:#0d9488!important;box-shadow:0 3px 14px #0d94884a}
+#view3d{touch-action:none;cursor:grab}
+#view3d:active{cursor:grabbing}
+
+/* v34: HTML anchored labels stay crisp regardless of WebGL exposure and zoom. */
+.world-label-layer{position:absolute;inset:0;z-index:5;overflow:hidden;pointer-events:none;contain:layout paint}
+.world-tag{position:absolute;left:0;top:0;transform:translate(-50%,-115%);color:white;
+  font:700 12px/1.3 Inter,Arial,sans-serif;letter-spacing:.12px;
+  background:#10233e;box-shadow:0 3px 12px #09152880;
+  border:1px solid #5e9bd4;border-left:4px solid #9fb0c5;border-radius:8px;
+  padding:5px 8px;min-width:78px;max-width:155px;white-space:nowrap;text-align:left;
+  text-shadow:none;opacity:1;will-change:transform}
+.world-tag .tag-title{display:block;max-width:132px;overflow:hidden;text-overflow:ellipsis}
+.world-tag .tag-status{display:block;font-size:10px;font-weight:600;color:#c7d8ef;margin-top:1px}
+.world-tag[data-status="online"]{border-left-color:#20d9a0}
+.world-tag[data-status="offline"]{border-left-color:#ff627c}
+.world-tag[data-status="unknown"]{border-left-color:#ffc857}
+.world-tag[data-status="demo"]{border-left-color:#6db4ff}
+.world-tag.is-selected{background:#163c73;border-color:#84b6ff;box-shadow:0 0 0 2px #82caff,0 5px 20px #09152880;z-index:3}
+.world-tag.area-tag{background:#fff;color:#1a3048;border-color:#89b6e7;border-left-color:#7468ec;max-width:180px;font-weight:800}
+.world-tag.area-tag .tag-status{color:#536783}
+.world-tag[hidden]{display:none!important}
+#toggleLabels{background:#114b77!important;color:#fff!important;border-color:#58a2d9!important;font-weight:700}
+#toggleLabels.is-off,#toggleRoomLabels.is-off{background:#25364d!important;color:#b8c7d8!important}
+#toggleRoomLabels{background:#145f69!important;color:#fff!important;border-color:#65bdc8!important;font-weight:700}
+.scene>.tip{z-index:6}
+
+#laptopCalibration,#laptopGlbStatus{display:none!important}
+
+/* Final monitoring UI */
+.layout{grid-template-columns:208px minmax(0,1fr) 260px!important}
+.layout>aside{padding:13px 11px!important}
+.brand{font-size:18px;letter-spacing:-.02em}
+header .sub{font-size:11px}
+.stats{gap:5px;margin:12px 0}
+.stat{padding:10px 3px;border-radius:10px}
+.stat b{font-size:20px}
+.advanced-panel{margin:8px 0;border:1px solid #e0e9f5;border-radius:11px;background:#f8fbff;overflow:hidden}
+.advanced-panel summary{padding:10px 11px;cursor:pointer;list-style:none;font-weight:700;color:#294463;font-size:12px}
+.advanced-panel summary::-webkit-details-marker{display:none}
+.advanced-panel summary::after{content:'⌄';float:right;color:#7892af}
+.advanced-panel[open] summary::after{content:'⌃'}
+.advanced-panel .room-spacing{margin:0!important;border:0!important;box-shadow:none!important;padding:9px!important;background:transparent!important}
+.advanced-panel .room-spacing>strong{display:none}
+.advanced-panel .small:empty{display:none}
+.advanced-panel .legend{padding:0 11px 10px}
+.live-pill{flex:0 0 auto;border:1px solid #c6d6eb;border-radius:999px;padding:8px 12px;font-size:12px;font-weight:700;white-space:nowrap;color:#28435f;background:#e5edf7}
+.live-pill.is-connected{background:#e1f8ee;border-color:#8cddbd;color:#0b7e56}
+.live-pill.is-disconnected{background:#fff0ed;border-color:#f5bbb2;color:#b23f34}
+.live-pill.is-pending{background:#edf4fc;color:#496b8c}
+#simulate,.scene>.tip,.scene2d .caption{display:none!important}
+.toolbar{gap:7px;padding:10px 12px}
+.toolbar button{padding:8px 11px}
+#ambientToggle,#glbStatus,#laptopGlbStatus,#viewHint{display:none!important}
+.object-list .obj{font-size:12px;padding:7px}
+#detailSidebar .section{margin:12px 0 6px}
+#detailSidebar .hint{font-size:11px}
+@media(max-width:1100px) and (min-width:701px){.layout{grid-template-columns:185px minmax(0,1fr) 225px!important}}
+@media(max-width:700px){.layout{grid-template-columns:minmax(0,1fr)!important}}
+
+/* Real popup actions for remote support */
+.profile-actions{align-items:center;gap:9px;flex-wrap:wrap}
+.profile-actions .remote-action{font-size:12px;font-weight:700;border-radius:11px;padding:9px 12px;max-width:100%;border:1px solid #b8d3ee;background:#eaf4ff;color:#1e5fa8;display:flex;align-items:center;gap:6px;justify-content:center}
+.profile-actions .remote-action.primary{background:#216bd3;color:white;border-color:#216bd3}
+.profile-actions .remote-action:disabled{background:#f1f4f7;color:#8f9aa9;border-color:#e0e5ed;cursor:not-allowed}
+.profile-sub{overflow-wrap:anywhere}
+.scene2d{flex-direction:column;gap:12px;align-items:center;justify-content:flex-start;padding:14px 16px 20px}.editor2d-toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;width:min(100%,1000px);background:#fff;border:1px solid #d8e5f1;border-radius:14px;padding:10px 12px;box-shadow:0 12px 26px rgba(47,72,108,.10)}.editor2d-toolbar .toolbar-title{font-size:12px;font-weight:800;color:#28405d;margin-right:2px}.editor2d-toolbar select,.editor2d-toolbar input{width:auto;min-width:140px;max-width:220px;padding:9px 10px}.editor2d-toolbar .small-note{font-size:12px;color:#69809c}.editor2d-toolbar button.is-adding{background:linear-gradient(135deg,#ef6b63,#d94d45)!important;border-color:#ef6b63!important;color:#fff!important}.plan{overflow:hidden}.plan-grid{position:absolute;inset:0;pointer-events:none;z-index:1}.plan-grid .grid-dot{position:absolute;width:8px;height:8px;border-radius:50%;transform:translate(-50%,-50%);background:rgba(64,110,166,.22);box-shadow:0 0 0 2px rgba(255,255,255,.78)}.plan-grid .grid-line-x,.plan-grid .grid-line-y{position:absolute;background:rgba(73,117,170,.12)}.plan-grid .grid-line-x{top:0;bottom:0;width:1px;transform:translateX(-50%)}.plan-grid .grid-line-y{left:0;right:0;height:1px;transform:translateY(-50%)}.pin{z-index:2}.caption{z-index:3}
+@media(max-width:700px){.scene2d{padding:12px}.editor2d-toolbar{width:min(100%,580px)}.editor2d-toolbar select,.editor2d-toolbar input,.editor2d-toolbar button{width:100%;max-width:none}.editor2d-toolbar .small-note{width:100%}}
+
+
+/* V4: Monitoring indicators and view switches in the left sidebar */
+.side-controls{margin:15px 0 13px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.side-section-title{font-size:10px;text-transform:uppercase;letter-spacing:.09em;color:#617791;font-weight:800;margin-top:7px}
+.side-monitoring,.side-control-buttons{display:flex;flex-direction:column;gap:7px;min-width:0}
+.side-monitoring .live-pill{display:flex!important;align-items:center;justify-content:center;white-space:normal;overflow-wrap:anywhere;max-width:100%;min-height:34px;text-align:center;padding:7px 6px}
+.side-control-buttons button{width:100%;min-width:0;max-width:100%;padding:9px 7px;font-size:12px;text-align:left;white-space:normal;overflow-wrap:anywhere}
+.top-device-stats{display:flex;gap:5px;align-items:center;flex-wrap:wrap;margin-left:8px}
+.top-stat{min-width:55px;padding:4px 8px;background:#e9f4ff;border:1px solid #b8d3ed;border-radius:9px;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.18;color:#183e61}
+.top-stat b{font-size:15px;font-weight:800;color:#163e64}
+.top-stat small{font-size:9px;font-weight:700;color:#526e86;white-space:nowrap}
+.top-stat-total{background:#defaf0;border-color:#b4e6d4}
+#list.hide{display:none!important}
+@media(max-width:700px){.side-controls{margin:7px 0}.side-control-buttons{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.top-device-stats{margin-left:0}.top-stat{padding:3px 6px}}
+</style><style>
+.device-list-stage{min-height:0;flex:1;display:flex;flex-direction:column;background:#f2f7fc;color:#253b54;overflow:hidden}
+.device-list-head{background:#fff;padding:22px 24px 16px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid #d8e6f2}
+.device-list-head h2{font-size:20px;color:#1c3e6c;margin:0 0 6px}.device-list-head p{font-size:12px;color:#69809b;margin:0}
+.device-list-summary{display:flex;gap:8px;flex-wrap:wrap}.device-list-summary span{border:1px solid #dbe5f2;border-radius:9px;background:#f5f9ff;color:#345574;padding:8px 10px;font-size:12px;font-weight:700}
+.device-list-scroller{flex:1;min-height:0;overflow:auto;padding:14px 18px 30px}.device-table{width:100%;min-width:760px;border-collapse:separate;border-spacing:0 7px;font-size:12px}
+.device-table thead th{text-align:left;color:#72869e;font-size:11px;letter-spacing:.035em;text-transform:uppercase;padding:10px 12px;position:sticky;top:-14px;z-index:2;background:#f2f7fc}
+.device-table tbody tr{background:white;cursor:pointer;box-shadow:0 2px 10px #223a5c0c;outline:1px solid #e0eaf4;border-radius:10px}
+.device-table tbody tr:hover{background:#eaf4ff;outline-color:#9cc2f7}.device-table tbody tr.selected{background:#e3f1ff;outline:2px solid #5e99e6}
+.device-table td{padding:14px 12px;max-width:260px;overflow-wrap:anywhere}.device-table td:first-child{border-radius:10px 0 0 10px}.device-table td:last-child{border-radius:0 10px 10px 0}
+.device-table .device-name{font-weight:750;font-size:13px;color:#253d60}.device-table .device-id{font-family:monospace;color:#637994}
+.device-state{display:inline-flex;align-items:center;gap:5px;font-weight:750;padding:5px 9px;border-radius:99px;background:#edf2f8;color:#64748b}
+.device-state.online{color:#087d51;background:#dcf8e9}.device-state.offline{color:#be364b;background:#ffe7eb}.device-state.unknown{color:#a27818;background:#fff3d1}
+.device-list-foot{background:#fff;border-top:1px solid #dbe7f2;padding:11px 22px;color:#6c839c;font-size:11px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+@media(max-width:700px){.device-list-head{padding:14px}.device-list-scroller{padding:5px}.device-table{min-width:700px}.device-list-head h2{font-size:17px}}
+</style>
+<style>
+.device-list-filters{display:flex;align-items:end;flex-wrap:wrap;gap:10px;background:#fff;padding:13px 24px;border-bottom:1px solid #dce8f3}
+.device-list-filters label{display:flex;flex-direction:column;gap:5px;color:#526b85;font-size:11px;font-weight:750}
+.device-list-filters input,.device-list-filters select{height:38px;box-sizing:border-box;border:1px solid #bfd1e3;border-radius:9px;background:#fff;color:#1b3856;padding:7px 11px;min-width:150px;max-width:100%;font:inherit;font-size:13px}
+.device-list-filters .search-field{flex:1 1 260px}.device-list-filters .search-field input{width:100%}
+.device-list-filters button{height:38px;padding:6px 13px;border:1px solid #b9cfe4;border-radius:9px;background:#f4f8fe;color:#1d4b79;cursor:pointer}
+.device-list-no-results{text-align:center;padding:30px!important;color:#627d96;font-weight:600}
+.device-list-filter-count{align-self:center;color:#67829e;font-size:12px;font-weight:700;margin-left:auto}
+@media(max-width:700px){.device-list-filters{padding:10px 14px;gap:8px}.device-list-filters label:not(.search-field){flex:1 1 130px}.device-list-filters select{min-width:0;width:100%}}
+</style>
+<style>
+/* Shared profile card appears in both 3D view and Device List. */
+.device-list-stage{position:relative}
+.device-list-stage>.floating-profile{left:auto;right:20px;top:102px;transform:none;pointer-events:auto;max-width:min(320px,calc(100% - 32px));padding-top:42px!important;z-index:30}
+.device-list-stage>.floating-profile::after{display:none}
+.device-list-stage>.floating-profile .popup-close{position:absolute;right:9px;top:9px;pointer-events:auto}
+@media(max-width:700px){.device-list-stage>.floating-profile{right:8px;top:90px}}
+</style>
+<style>
+.auth-overlay{position:fixed;inset:0;z-index:99999;background:linear-gradient(125deg,#10213c,#183b63 58%,#315e88);display:flex;align-items:center;justify-content:center;padding:22px}
+.auth-overlay.hide{display:none!important}
+.auth-card{width:min(440px,100%);box-sizing:border-box;background:#fff;border-radius:22px;padding:30px;box-shadow:0 28px 90px #0006;color:#19334d}
+.auth-card h2{margin:4px 0 8px;font-size:25px}.auth-card p{color:#60758a;line-height:1.5;font-size:14px}
+.auth-card label{display:block;margin:15px 0 6px;font-weight:700;font-size:13px}.auth-card input{box-sizing:border-box;width:100%;padding:12px;border-radius:10px;border:1px solid #b6c8d8;font:inherit}
+.auth-card button{width:100%;margin-top:15px;padding:12px;cursor:pointer}.auth-error{color:#c12a43;font-size:13px;min-height:1.4em}
+</style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.1/examples/jsm/"}}</script><style>
+/* V16: visually verifiable editor grid and search bar */
+.build-version{font-size:10px;font-weight:900;padding:6px 8px;border-radius:7px;background:#047857;color:#fff;letter-spacing:.08em}
+#planGrid{position:absolute!important;inset:0!important;z-index:4!important;display:block!important;overflow:hidden;pointer-events:none;opacity:1!important}
+#planGrid svg{width:100%!important;height:100%!important;display:block!important;overflow:visible}
+#planGrid svg line{vector-effect:non-scaling-stroke;shape-rendering:crispEdges;stroke:#087eff!important;stroke-width:1!important;opacity:1!important}
+#planGrid .grid-outline{stroke:#0474db!important;stroke-width:1.6!important;fill:none}
+#pins{position:absolute;inset:0;z-index:5;pointer-events:none}
+#pins .pin{pointer-events:auto}
+#sceneList .device-list-filters{display:flex!important;flex-shrink:0!important;z-index:3!important;position:relative!important;visibility:visible!important}
+#sceneList .device-list-filters input,#sceneList .device-list-filters select{color:#193b5a!important;background:#fff!important}
+#sceneList .device-list-head{flex-shrink:0}
+@media(max-width:900px){#sceneList .device-list-filters{max-height:190px;overflow-y:auto}}
+</style></head><body><header><div><div class="brand">🏢 Virtual Office <span style="color:#3772e9">/ Multi-Floor</span></div><div class="sub">Monitoring perangkat kantor · <strong style="color:#0f957c">V16 · GRID + FILTER</strong></div></div><div style="display:flex;gap:7px;flex-wrap:wrap"><button type="button" id="adminUnlock">Login Admin</button><button type="button" id="changePassword" class="admin-only hide">Ganti Password</button><button type="button" id="adminLogout" class="admin-only hide">Logout</button><button type="button" id="importBrowserConfig" class="admin-only hide" title="Impor konfigurasi lama dari browser ini ke server">Migrasi Browser</button><span id="sharedIndicator" class="sub hide" aria-live="polite">SQLite · memuat...</span><button id="export" class="admin-only hide">Ekspor JSON</button><button id="importBtn" class="admin-only hide">Impor JSON</button><input class="hide" type="file" id="importFile" accept=".json,application/json"><button id="reset" class="admin-only hide">Reset Layout</button></div></header>
+<div class="layout"><aside><strong id="roomHeading">Office Lantai 1</strong><div class="sub">Monitoring KSC</div><label for="floorSelect">Pilih Lantai / Room</label><select id="floorSelect"><option value="1">Lantai 1 — Office</option><option value="2">Lantai 2 — Room 01</option></select><section class="side-controls" aria-label="Monitoring dan kontrol tampilan">
+  <div class="side-section-title">Monitoring Live</div>
+  <div class="side-monitoring" id="sidebarConnectionControls"><span id="monitorInfo" class="live-pill is-pending" role="status" aria-live="polite">● Menghubungkan ke KSC...</span><span id="haMonitorInfo" class="live-pill is-pending" role="status">● HA memuat...</span></div>
+  <div class="side-section-title">Kontrol Tampilan 3D</div>
+  <div class="side-control-buttons" id="sidebarViewControls"><button id="cameraHome" title="Kembalikan kamera isometric">⌂ Kamera</button><button type="button" id="panMode" title="Geser tampilan dengan klik kiri lalu tarik (pan)" aria-pressed="false">✥ Mode Geser: OFF</button><button id="toggleLabels" type="button" aria-pressed="true">🏷 Label Jelas: ON</button><button id="toggleRoomLabels" type="button" aria-pressed="true" title="Tampilkan atau sembunyikan label nama ruangan">🏠 Nama Ruangan: ON</button><button id="toggleSignals" type="button" aria-pressed="true" title="Tampilkan atau sembunyikan animasi sinyal AP">📶 Sinyal AP: ON</button></div>
+</section><details class="advanced-panel"><summary>Jarak perangkat</summary><div class="room-spacing"><label for="spacingArea">Pilih area</label><select id="spacingArea" aria-label="Area untuk mengatur spacing"></select><div class="between"><span>Kerenggangan workstation</span><span id="spacingValue" class="value">1.00×</span></div><input type="range" id="spacingRange" min="0.70" max="1.50" step="0.05" value="1" aria-label="Pengaturan jarak antar perangkat"><div class="small"></div><button id="resetSpacing" type="button" style="margin-top:8px;width:100%">Reset jarak area</button></div></details><details class="advanced-panel"><summary>Nama ruangan</summary><div class="room-spacing"><label for="roomAreaEditor">Area</label><select id="roomAreaEditor" aria-label="Area untuk mengatur nama ruangan"></select><label for="roomAreaName">Nama ruangan</label><input id="roomAreaName" placeholder="Misal: Ruang IT / Area Produksi"><div class="formactions"><button id="saveAreaName" type="button">Simpan nama ruangan</button><button id="resetAreaName" type="button">Reset nama asli</button></div><div class="small"></div></div></details><div id="list" class="hide" aria-hidden="true"></div><details class="advanced-panel legend-panel"><summary>Legenda</summary><div class="legend"><span class="dot yellow"></span> User / workstation<br><span class="dot orange"></span> Access point<br><span class="dot purple"></span> Server / Printer</div></details></aside>
+<main class="main"><div class="toolbar"><button type="button" id="openDetail" class="hide" title="Tampilkan panel detail">☷ Detail Objek</button><button id="mode3d" class="primary">Tampilan 3D</button><button id="modeList" type="button">☷ Device List</button><button id="mode2d">✎ Editor Denah</button><span class="build-version" title="Versi aplikasi yang benar-benar dibuka browser">V16</span><div class="top-device-stats" aria-label="Jumlah device lantai aktif"><div class="top-stat top-stat-total"><b id="nTotal">0</b><small>Total Device</small></div><div class="top-stat"><b id="nUsers">27</b><small>User</small></div><div class="top-stat"><b id="nAp">1</b><small>AP</small></div><div class="top-stat"><b id="nServers">2</b><small>Server / Printer</small></div></div><span id="laptopGlbStatus" class="sub hide" style="color:#afffd8;font-size:11px;max-width:180px" aria-live="polite">Laptop GLB: memuat...</span><span id="glbStatus" class="sub hide" style="color:#b7efff;max-width:215px;font-size:11px" aria-live="polite">GLB: memuat...</span><button id="ambientToggle" class="hide" title="Mode animasi avatar hanya mengetik">⌨ Typing Only</button><span class="sub hide" id="viewHint">Klik kiri: putar · Klik kanan: geser · Scroll: zoom · Mode Geser untuk touchpad</span></div><div class="scene" id="scene"><canvas id="view3d"></canvas><div id="worldLabels" class="world-label-layer" aria-hidden="true"></div></div><section class="device-list-stage hide" id="sceneList" aria-label="Daftar seluruh perangkat per lantai">
+  <div class="device-list-head"><div><h2>☷ Daftar Perangkat · Lantai <span id="deviceListFloor">1</span></h2><p>KSC Live + Home Assistant · klik perangkat untuk membuka Detail Objek</p></div><div class="device-list-summary" id="deviceListSummary"></div></div>
+  <div class="device-list-filters" role="search" aria-label="Pencarian dan filter perangkat">
+<label class="search-field" for="deviceSearch">Cari perangkat<input id="deviceSearch" type="search" autocomplete="off" placeholder="Nama, ID, hostname, IP, AnyDesk, entity..."></label>
+<label for="deviceStatusFilter">Status<select id="deviceStatusFilter"><option value="all">Semua status</option><option value="online">Online</option><option value="offline">Offline</option><option value="unknown">Unknown</option></select></label>
+<label for="deviceTypeFilter">Jenis perangkat<select id="deviceTypeFilter"><option value="all">Semua jenis</option><option value="user">Workstation / Laptop</option><option value="ap">Access Point</option><option value="printer">Printer</option><option value="server">Server</option></select></label>
+<label for="deviceSort">Urutkan<select id="deviceSort"><option value="default">Jenis &amp; ID</option><option value="name">Nama A–Z</option><option value="status">Status</option><option value="ip">Alamat IP</option></select></label>
+<button type="button" id="deviceFilterReset">↺ Reset</button><span id="deviceFilteredCount" class="device-list-filter-count" aria-live="polite"></span>
+</div>
+<div class="device-list-scroller"><table class="device-table"><thead><tr><th>Status</th><th>ID</th><th>Nama perangkat / pengguna</th><th>Jenis</th><th>Hostname / Entity ID</th><th>IP</th><th>Detail</th></tr></thead><tbody id="deviceTableBody"></tbody></table></div>
+  <div class="device-list-foot">Status diperbarui otomatis dari KSC dan Home Assistant. <span>🟢 Online · 🔴 Offline · 🟡 Unknown</span></div>
+</section><div class="scene2d hide" id="scene2d"><div class="editor2d-toolbar"><span class="toolbar-title">Editor 2D · GRID V16</span><button type="button" id="addDeviceMode">＋ Tambah Device</button><select id="newObjType" aria-label="Jenis objek baru"><option value="user">User / Workstation</option><option value="ap">Access Point</option><option value="server">Server</option><option value="printer">Printer</option></select><select id="newObjDevice" aria-label="Jenis perangkat baru"><option value="PC">PC</option><option value="Laptop">Laptop</option></select><input id="newObjName" placeholder="Nama user / device (opsional)" aria-label="Nama user atau perangkat baru"><span class="small-note">Grid snap aktif agar perangkat baru dan drag tetap sejajar.</span></div><div class="plan" id="plan"><img id="planImg" src="assets/lantai1.png" alt="Layout Office"/><div id="planGrid" class="plan-grid" aria-hidden="true"></div><div id="pins"></div><div class="caption" id="planCaption">Geser perangkat untuk mengubah lokasi. Snap grid aktif agar tetap sejajar.</div></div></div></main>
+<aside class="right" id="detailSidebar"><div class="detail-heading"><strong>Detail Objek</strong><button type="button" id="closeDetail" class="close-ui" title="Tutup sidebar detail" aria-label="Tutup sidebar detail">×</button></div><div class="sub" id="selectedTitle">Klik workstation atau perangkat</div><div id="editPanel" class="hide"><label>ID Objek</label><input id="fId" disabled><label>Jenis Objek</label><input id="fType" disabled><label>Nama User / Perangkat</label><input id="fName" placeholder="Isi nama di sini"><label>Hostname</label><input id="fHost" list="kscHostnames" placeholder="Contoh: IDSRBJMITSNB40"><button type="button" id="loadKscHosts" title="Muat daftar hostname dari KSC">🔄 Ambil Hostname dari KSC</button><datalist id="kscHostnames"></datalist><p class="hint" id="kscInventoryInfo">Hostname bisa dipilih dari daftar KSC setelah sinkronisasi.</p><label>IP Address dari KSC</label><input id="fIp" placeholder="Otomatis dari KSC"><label>AnyDesk ID / Alias</label><input id="fAnyDesk" placeholder="Contoh: 123456789 atau laptop01@ad" maxlength="100" autocomplete="off"><p class="hint">Default mengikuti IP dari KSC. Anda dapat mengganti ID/Alias secara manual. Kosongkan kolom lalu Simpan untuk kembali otomatis mengikuti IP.</p><div id="haField"><label>Home Assistant Entity ID (AP / Printer)</label><input id="fHaEntity" placeholder="Contoh: sensor.ap_office_status" maxlength="150" autocomplete="off"><p class="hint">Pilih Entity ID dari Developer Tools → States pada Home Assistant. Data akan disimpan di SQLite.</p></div><label>Jenis Perangkat</label><select id="fDevice"><option>PC</option><option>Laptop</option><option>Network</option><option>Server</option><option>Printer</option></select><div id="laptopCalibration" class="animation-note hide" style="margin-top:12px"><strong>💻 Posisi Laptop GLB</strong><p class="hint">Geser laptop pada permukaan meja (lokal, mengikuti arah meja). Tidak memindahkan workstation atau kursi.</p><label>Geser kiri / kanan (X)</label><input id="laptopShiftX" type="range" min="-0.45" max="0.45" step="0.01" value="0"><div class="small" id="laptopShiftXValue">0.00</div><label>Geser depan / belakang (Z)</label><input id="laptopShiftZ" type="range" min="-0.35" max="0.35" step="0.01" value="0"><div class="small" id="laptopShiftZValue">0.00</div><label>Rotasi laptop</label><select id="laptopYaw"><option value="0">0°</option><option value="90">90°</option><option value="180">180°</option><option value="270">270°</option></select><div class="formactions"><button type="button" id="resetLaptopPlacement">Reset posisi laptop</button></div><p class="hint">Perubahan tersimpan di SQLite saat mode Admin aktif.</p></div><div id="facingBlock"><label>Arah Hadap Avatar</label><select id="fFacing"><option value="0">↑ Atas denah</option><option value="90">→ Kanan denah</option><option value="180">↓ Bawah denah</option><option value="270">← Kiri denah</option></select><p class="hint">Hanya avatar yang berputar. Model workstation mengikuti arah meja.</p><div class="formactions"><button type="button" id="rotateLeft">↶ Putar 90°</button><button type="button" id="rotateRight">Putar 90° ↷</button></div></div><div id="deskFacingBlock"><label>Arah Hadap Meja / Workstation</label><select id="fDeskFacing"><option value="0">↑ Atas denah</option><option value="90">→ Kanan denah</option><option value="180">↓ Bawah denah</option><option value="270">← Kiri denah</option></select><p class="hint">Meja, perangkat PC/Laptop, dan kursi akan berputar bersama workstation. Avatar bisa diatur terpisah.</p><div class="formactions"><button type="button" id="deskRotateLeft">↶ Putar meja 90°</button><button type="button" id="deskRotateRight">Putar meja 90° ↷</button></div></div><div id="animationBlock" class="animation-note"><strong>🎮 Editor Animasi Avatar</strong><label>Model Workstation 3D (Avatar + Meja + Kursi)</label><select id="fAvatarStyle"><option value="cartoon">Original — meja + avatar bawaan</option><option value="worker1">Office Worker 1 — satu set</option><option value="worker2">Office Worker 2 — satu set</option><option value="worker5">Office Worker 5 — satu set</option><option value="worker6">Office Worker 6 — satu set</option></select><p class="hint">Setiap opsi memuat GLB lengkap. Model yang dipilih disimpan per perangkat di SQLite; animasi avatar hanya aktif bila Online. Worker 1/2/5/6 tersedia; skala awal 60%. Lantai bawaan GLB disembunyikan dan tidak ikut menghitung skala.</p><div id="workerScaleControls" class="animation-note hide" style="margin:12px 0;padding:11px;border:1px solid #cbdcea;border-radius:10px">
+<strong>📐 Skala Workstation 3D</strong>
+<p class="hint">Mengubah ukuran satu set Worker pilihan (avatar, meja, kursi, komputer). Preview langsung, tersimpan hanya pada device terpilih.</p>
+<label class="range-row" for="fWorkerScale"><span>Ukuran model</span><span id="workerScaleValue">60%</span></label>
+<input id="fWorkerScale" type="range" min="40" max="140" step="1" value="60" aria-label="Ukuran model Office Worker">
+<div class="formactions"><button type="button" id="resetWorkerScale">↺ Reset 60%</button></div>
+</div><label>Gerakan avatar</label><select id="fAnim"><option value="working">Duduk & mengetik (Working)</option><option value="paused">Diam (Pause)</option></select><label class="range-row"><span>Kecepatan animasi</span><span id="speedLabel">1.0×</span></label><input id="fSpeed" type="range" min="0.25" max="2" step="0.25" value="1"><div class="formactions"><button id="playAnimation">▶ Play</button><button id="pauseAnimation">⏸ Pause</button></div><p class="muted-note"></p></div><label>Posisi X (%)</label><input id="fX" type="number" min="0" max="100" step="0.01"><label>Posisi Y (%)</label><input id="fY" type="number" min="0" max="100" step="0.01"><div class="formactions"><button id="simulate" class="hide" tabindex="-1" aria-hidden="true">Ubah status demo</button><button id="save" class="primary">Simpan</button></div></div><p class="hint" id="empty">Pilih perangkat pada denah untuk melihat atau mengedit detail.</p></aside></div>
+<div id="loginOverlay" class="auth-overlay hide" role="dialog" aria-modal="true" aria-label="Login Virtual Office"><div class="auth-card"><div style="font-size:31px">🏢</div><h2>Virtual Office</h2><p>Masuk menggunakan akun Admin atau Viewer. Kedua akun memerlukan password. Viewer hanya dapat melakukan monitoring.</p><form id="loginForm"><label for="loginUser">Username</label><select id="loginUser" autocomplete="username"><option value="admin">Admin</option><option value="viewer">Viewer</option></select><label for="loginPassword">Password</label><input id="loginPassword" type="password" autocomplete="current-password" required placeholder="Masukkan password akun"><div id="loginError" class="auth-error" aria-live="polite"></div><button type="submit" class="primary">Masuk</button></form><p id="loginSetupInfo" class="hide" style="color:#a23c35">Password Admin atau Viewer belum diatur. Jalankan setup kedua akun di Armbian terlebih dahulu.</p></div></div>
+<div id="passwordOverlay" class="auth-overlay hide" role="dialog" aria-modal="true" aria-label="Ganti password Admin"><div class="auth-card"><h2>Ganti Password Admin</h2><form id="passwordForm"><label for="currentPassword">Password saat ini</label><input id="currentPassword" type="password" autocomplete="current-password" required><label for="newPassword">Password baru (minimal 10 karakter)</label><input id="newPassword" type="password" autocomplete="new-password" minlength="10" required><label for="repeatPassword">Konfirmasi password baru</label><input id="repeatPassword" type="password" autocomplete="new-password" minlength="10" required><div id="passwordError" class="auth-error" aria-live="polite"></div><button type="submit" class="primary">Simpan Password Baru</button></form><button id="closePassword" type="button">Batal</button></div></div>
+<script type="module">
+import * as THREE from 'three';
+import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
+import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
+import { clone as cloneSkinnedModel } from 'three/addons/utils/SkeletonUtils.js';
+const el=id=>document.getElementById(id);
+const floorFiles={'1':'lantai1.json','2':'lantai2.json'};
+let floor='1',source,data;
+function storageKey(){return floor==='1'?'nic_office_l1_r01_v10':'nic_office_l2_r01_v10'}
+function loadSaved(){
+ try{
+  const v=JSON.parse(localStorage.getItem(storageKey()));
+  if(v?.roomId!==source.roomId || !Array.isArray(v.objects))return structuredClone(source);
+  // v25: reconcile stale browser layouts against the current floor file.
+  // Preserve hostname, names and animation settings for matching IDs; new assets use source coordinates.
+  const sourceIds=new Set(source.objects.map(o=>o.id+':'+o.type));
+  const previousIds=new Set(v.objects.map(o=>o.id+':'+o.type));
+  if(sourceIds.size!==previousIds.size || [...sourceIds].some(k=>!previousIds.has(k))){
+   const previous=new Map(v.objects.map(o=>[o.id+':'+o.type,o]));
+   const merged=structuredClone(source);
+   merged.objects=merged.objects.map(o=>{
+     const old=previous.get(o.id+':'+o.type);
+     if(!old)return o;
+     const {x,y,rect,...retained}=old;
+     return {...o,...retained,x:o.x,y:o.y,rect:o.rect};
+   });
+   merged.roomSpacing={...(v.roomSpacing||{})};
+   merged.customAreaNames={...(v.customAreaNames||{})};
+   try{localStorage.setItem(storageKey(),JSON.stringify(merged))}catch{}
+   return merged;
+  }
+  if(floor==='1' && Number(v.layoutRevision||0)<28){
+   // v28: keep original floor-1 workstation identifiers and KSC hostname mapping,
+   // but adopt the latest floor-1 reference image and coordinates.
+   const previous=new Map(v.objects.map(o=>[o.id,o]));
+   const merged=structuredClone(source);
+   merged.objects=merged.objects.map(o=>{
+     const old=previous.get(o.id);
+     if(!old || old.type!==o.type)return o;
+     const {x,y,rect,...retained}=old;
+     return {...o,...retained,x:o.x,y:o.y,rect:o.rect};
+   });
+   merged.roomSpacing={...source.roomSpacing,...(v.roomSpacing||{})};
+   try{localStorage.setItem(storageKey(),JSON.stringify(merged))}catch{}
+   return merged;
+  }
+  if(floor==='2' && Number(v.layoutRevision||0)<27){
+   // Migrate denah L2 to v18 while retaining workstation IDs, hostname/KSC mapping and edits.
+   const previous=new Map(v.objects.map(o=>[o.id,o]));
+   const merged=structuredClone(source);
+   merged.objects=merged.objects.map(o=>{
+    const old=previous.get(o.id);
+    if(!old)return o;
+    const {x,y,rect,...retained}=old;
+    return {...o,...retained,x:o.x,y:o.y};
+   });
+   merged.roomSpacing=v.roomSpacing||{};
+   merged.customAreaNames=v.customAreaNames||{};
+   try{localStorage.setItem(storageKey(),JSON.stringify(merged))}catch{}
+   return merged;
+  }
+  v.referenceImage=source.referenceImage;
+  v.referenceSize=source.referenceSize;
+  return v;
+ }catch{return structuredClone(source)}
+}
+async function loadFloor(next){
+ if(changePending){clearTimeout(writeTimer);await saveShared();}
+ floor=next;source=await (await fetch(floorFiles[next],{cache:'no-store'})).json();await loadSharedFloor();
+ selected=null;
+ el('floorSelect').value=floor;el('roomHeading').textContent=source.roomName;
+ const img=el('planImg');img.src=source.referenceImage+'?build=grid-v16';img.alt=source.roomName;
+ el('plan').style.aspectRatio=`${source.referenceSize.width}/${source.referenceSize.height}`;
+ refreshSpacing();refreshAreaEditor();select(null);buildRoom();resize();fetchLiveStatus();if(mode==='list')renderDeviceList();
+}
+el('floorSelect').onchange=e=>loadFloor(e.target.value);
+
+let selected=null,mode='3d',scene,camera,renderer,controls,raycaster,mouse,meshes=[],roomGroup,animationRunning=false,animatedAvatars=[],animatedDevices=[],roomDecor=[],globalPaused=false,clock=new THREE.Clock(),addDeviceMode=false;
+const colorType=t=>t==='user'?'yellow':t==='ap'?'orange':t==='printer'?'printer':'purple';
+let sharedRevision=0,writeTimer=null,savingShared=false,changePending=false,adminToken='',viewerToken='',loginToken=sessionStorage.getItem('vo_login_session')||'';
+const sharedIndicator=()=>el('sharedIndicator');
+function sharedInfo(msg){if(sharedIndicator())sharedIndicator().textContent=msg;}
+async function loadSharedFloor(){
+ const response=await authedFetch('/api/config/'+floor,{cache:'no-store'});
+ if(!response.ok)throw Error('Konfigurasi SQLite belum tersedia ('+response.status+')');
+ const result=await response.json();sharedRevision=result.revision;data=result.config;
+ sharedInfo('SQLite · sinkron · rev '+sharedRevision);
+}
+function saveLocal(){
+ if(!adminToken){sharedInfo('Viewer · perubahan perlu akses Admin');return;}
+ changePending=true;sharedInfo('SQLite · perubahan belum tersimpan');
+ clearTimeout(writeTimer);writeTimer=setTimeout(saveShared,550);
+}
+async function saveShared(){
+ if(savingShared || !changePending || !adminToken)return;
+ savingShared=true;changePending=false;
+ const targetFloor=floor,expectedRevision=sharedRevision,config=structuredClone(data);
+ try{
+   const r=await fetch('/api/config/'+targetFloor,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+adminToken},body:JSON.stringify({revision:expectedRevision,config})});
+   const result=await r.json();
+   if(!r.ok){if(r.status===401)clearAdmin();throw Error((r.status===409?'KONFLIK: ':'')+(result.error||'HTTP '+r.status));}
+   if(floor===targetFloor){sharedRevision=result.revision;sharedInfo('SQLite · tersimpan · rev '+sharedRevision);}
+ }catch(e){
+   sharedInfo('Gagal menyimpan: '+e.message);
+   alert('Konfigurasi belum tersimpan di SQLite: '+e.message+'\nMuat ulang data bersama bila terjadi konflik.');
+ }finally{
+   savingShared=false;
+   if(changePending){clearTimeout(writeTimer);writeTimer=setTimeout(saveShared,600)}
+ }
+}
+function authedFetch(url,options={}){
+ const token=adminToken||viewerToken;
+ return fetch(url,{...options,headers:{...(options.headers||{}),...(token?{'Authorization':'Bearer '+token}:{})}});
+}
+function applyAdminMode(){
+ const allowed=!!adminToken;
+ for(const selector of ['#editPanel input','#editPanel select','#editPanel button','#spacingRange','#resetSpacing','#roomAreaName','#saveAreaName','#resetAreaName','#reset','#importBtn']){
+   document.querySelectorAll(selector).forEach(e=>e.disabled=!allowed);
+ }
+ document.querySelectorAll('.admin-only').forEach(e=>e.classList.toggle('hide',!allowed));
+ if(el('mode2d'))el('mode2d').classList.toggle('hide',!allowed);
+ if(!allowed&&mode==='2d')setMode('3d');
+ el('adminUnlock').textContent=allowed?'Admin Aktif':'Login Admin';
+}
+function showLogin(){el('loginError').textContent='';el('loginPassword').value='';el('loginOverlay').classList.remove('hide');el('loginUser').focus()}
+function adminUnlock(){showLogin()}
+async function authRequest(path,payload,token=adminToken){
+ const r=await fetch(path,{method:'POST',headers:{'Content-Type':'application/json',...(token?{'Authorization':'Bearer '+token}:{})},body:JSON.stringify(payload||{})});
+ const result=await r.json();if(!r.ok)throw Error(result.error||'HTTP '+r.status);return result;
+}
+function clearAdmin(){adminToken='';viewerToken='';loginToken='';sessionStorage.removeItem('vo_login_session');sessionStorage.removeItem('vo_admin_session');applyAdminMode();sharedInfo('SQLite · Belum login')};
+el('loginForm').onsubmit=async event=>{
+ event.preventDefault();const btn=event.target.querySelector('[type=submit]');btn.disabled=true;el('loginError').textContent='';
+ try{const reply=await authRequest('/api/auth/login',{username:el('loginUser').value.trim(),password:el('loginPassword').value},'');loginToken=reply.token;adminToken=reply.role==='admin'?reply.token:'';viewerToken=reply.role==='viewer'?reply.token:'';sessionStorage.setItem('vo_login_session',loginToken);sessionStorage.removeItem('vo_admin_session');el('loginOverlay').classList.add('hide');el('loginPassword').value='';applyAdminMode();sharedInfo('SQLite · '+(reply.role==='admin'?'Admin':'Viewer'));if(changePending&&adminToken)saveShared();await loadSharedFloor();buildRoom()}
+ catch(e){el('loginError').textContent=e.message}
+ finally{btn.disabled=false}
+};
+el('adminLogout').onclick=async()=>{try{await authRequest('/api/auth/logout',{},loginToken)}catch{}clearAdmin();showLogin()};
+el('changePassword').onclick=()=>{el('passwordError').textContent='';el('passwordForm').reset();el('passwordOverlay').classList.remove('hide')};
+el('closePassword').onclick=()=>el('passwordOverlay').classList.add('hide');
+el('passwordForm').onsubmit=async event=>{
+ event.preventDefault();el('passwordError').textContent='';const now=el('currentPassword').value,pass=el('newPassword').value;
+ if(pass!==el('repeatPassword').value){el('passwordError').textContent='Konfirmasi password tidak sesuai';return}
+ try{await authRequest('/api/auth/change-password',{currentPassword:now,newPassword:pass});el('passwordOverlay').classList.add('hide');clearAdmin();alert('Password diperbarui. Silakan login kembali.');showLogin()}
+ catch(e){el('passwordError').textContent=e.message}
+};
+async function restoreAdminSession(){
+ try{const r=await fetch('/api/auth/status',{headers:loginToken?{'Authorization':'Bearer '+loginToken}:{}});const result=await r.json();if(result.authenticated){adminToken=result.role==='admin'?loginToken:'';viewerToken=result.role==='viewer'?loginToken:'';el('loginOverlay').classList.add('hide')}else{clearAdmin();showLogin()}if(!result.configured||!result.viewerConfigured)el('loginSetupInfo').classList.remove('hide');applyAdminMode()}
+ catch{clearAdmin();showLogin()}
+}
+await restoreAdminSession();
+async function importBrowserSettings(){
+ if(!adminToken){adminUnlock();if(!adminToken)return}
+ const browserData=loadSaved();
+ if(!localStorage.getItem(storageKey())){alert('Tidak ditemukan konfigurasi lama pada browser ini.');return}
+ if(!confirm('Impor pengaturan lama dari browser INI ke SQLite untuk Lantai '+floor+'? Data server untuk lantai ini akan ditimpa.'))return;
+ data=browserData;refreshSpacing();refreshAreaEditor();select(null);buildRoom();saveLocal();
+}
+async function checkSharedUpdates(){
+ if(changePending||savingShared||document.activeElement?.matches('input,select,textarea'))return;
+ try{
+   const r=await authedFetch('/api/config/'+floor,{cache:'no-store'});
+   if(!r.ok)return;
+   const incoming=await r.json();
+   if(incoming.revision===sharedRevision)return;
+   data=incoming.config;sharedRevision=incoming.revision;
+   refreshSpacing();refreshAreaEditor();select(null);buildRoom();refreshList();refreshPins();
+   sharedInfo('SQLite · diperbarui · rev '+sharedRevision);
+ }catch(e){sharedInfo('SQLite · tidak dapat dijangkau')}
+}
+setInterval(checkSharedUpdates,20000);
+
+// Initialize the SQLite state after sharedRevision, sharedIndicator and helpers exist.
+// Otherwise loadSharedFloor triggers a temporal-dead-zone ReferenceError and
+// prevents the Admin click handler and Three.js scene from initializing.
+source=await (await fetch(floorFiles[floor],{cache:'no-store'})).json();
+try {
+ await loadSharedFloor();
+} catch (error) {
+ console.error('[Virtual Office] SQLite configuration unavailable:',error);
+ data=structuredClone(source);
+ sharedInfo('SQLite · gagal terhubung: '+error.message);
+}
+
+const getObj=()=>data.objects.find(o=>o.id===selected);
+const nice=o=>o.name?.trim()||o.id;
+applyAdminMode();sharedInfo(adminToken?'SQLite · Admin':viewerToken?'SQLite · Viewer':'SQLite · Login diperlukan');
+let ambientEnabled=false;
+const liveMode=true;
+let liveStatus={};
+let liveAvailable=false;
+function normalizeKscHostname(v){return String(v||'').trim().toUpperCase().split('.')[0]}
+function validateKscIp(ip){
+ if(typeof ip!=='string'||!/^(?:\d{1,3}\.){3}\d{1,3}$/.test(ip))return false;
+ const octets=ip.split('.').map(Number);
+ return octets.every(n=>n>=0&&n<=255)&&octets[0]!==0&&octets[0]!==127&&octets[0]<224&&!(octets[0]===169&&octets[1]===254);
+}
+function syncAnyDeskDefault(o){
+ if(o.type!=='user')return false;
+ let changed=false;
+ // Older data may already contain a manually entered AnyDesk alias. Never replace it.
+ if(typeof o.anydeskManual!=='boolean'){
+   o.anydeskManual=!!String(o.anydeskId||'').trim();
+   changed=true;
+ }
+ if(!o.anydeskManual && validateKscIp(o.ip) && o.anydeskId!==o.ip){
+   o.anydeskId=o.ip;
+   changed=true;
+ }
+ return changed;
+}
+function syncDeviceIpsFromKsc(){
+ if(!liveAvailable||!data?.objects)return false;
+ let changed=false;
+ for(const o of data.objects){
+   if(syncAnyDeskDefault(o))changed=true;
+   const host=normalizeKscHostname(o.hostname);
+   if(!host)continue;
+   const record=liveStatus[host];
+   if(!record||record.duplicate===true||!validateKscIp(record.ip))continue;
+   if(o.ip!==record.ip){o.ip=record.ip;changed=true}
+   if(o.kscIpHostname!==host){o.kscIpHostname=host;changed=true}
+   if(syncAnyDeskDefault(o))changed=true;
+ }
+ // IP KSC adalah data live, tidak perlu mengubah konfigurasi bersama.
+ if(selected){const o=getObj();if(o){el('fIp').value=o.ip||'';el('fAnyDesk').value=o.anydeskId||''}}
+ return changed;
+}
+let haLive={};
+function haStatus(o){
+ const entity=String(o.haEntityId||'').trim().toLowerCase();
+ return entity?(haLive[entity]?.status||'unknown'):null;
+}
+async function fetchHAStatus(){
+ try{
+  const response=await authedFetch('/api/ha/status',{cache:'no-store',signal:AbortSignal.timeout(12000)});
+  if(!response.ok)throw Error('HTTP '+response.status);
+  const body=await response.json();haLive=body.connected?(body.entities||{}):{};
+  const badge=el('haMonitorInfo');badge.textContent=body.connected?'● HA terhubung':'● HA belum terhubung';
+  badge.title=body.error||'Home Assistant REST API';badge.className='live-pill '+(body.connected?'is-connected':'is-disconnected');
+ }catch(err){haLive={};const badge=el('haMonitorInfo');badge.textContent='● HA tidak terhubung';badge.title=String(err);badge.className='live-pill is-disconnected'}
+ const next=visualStatusSignature();if(lastRenderedStatusSignature!==next)buildRoom();else{refreshWorldLabels();updatePopup()};refreshList();if(mode==='list')renderDeviceList();
+}
+setInterval(fetchHAStatus,20000);
+function effectiveStatus(o){
+  if(o.type==='ap'||o.type==='printer'||o.type==='server'){const status=haStatus(o);if(status)return status;}
+  const key=String(o.hostname||'').trim().toUpperCase().split('.')[0];
+  if(!key)return 'unknown';
+  return (liveStatus[key]?.status)||'unknown';
+}
+let lastRenderedStatusSignature=null;
+function visualStatusSignature(){
+ return data.objects.map(o=>[o.id,effectiveStatus(o)].join(':')).join('|');
+}
+async function fetchLiveStatus(){
+  try{
+    const response=await authedFetch('/api/status',{cache:'no-store',signal:AbortSignal.timeout(5000)});
+    if(!response.ok)throw Error('HTTP '+response.status);
+    const v=await response.json();liveStatus=v.connected?(v.devices||{}):{};liveAvailable=!!v.connected;
+    syncDeviceIpsFromKsc();
+    el('monitorInfo').textContent=v.connected?'● KSC terhubung · '+(v.total_hosts??'?')+' perangkat':'● KSC tidak terhubung';
+    el('monitorInfo').className='live-pill '+(v.connected?'is-connected':'is-disconnected');
+  }catch(e){liveAvailable=false;liveStatus={};el('monitorInfo').textContent='● KSC tidak terhubung';el('monitorInfo').className='live-pill is-disconnected';}
+  refreshList();
+  if(mode==='list')renderDeviceList();
+  const nextSignature=visualStatusSignature();
+  if(lastRenderedStatusSignature!==nextSignature){buildRoom();}
+  else {refreshWorldLabels();updatePopup();}
+}
+
+setInterval(fetchLiveStatus,15000);
+
+
+async function loadKscInventory(){
+  const info=el('kscInventoryInfo');info.textContent='Memuat hostname KSC...';
+  try{
+    const response=await authedFetch('/api/inventory',{cache:'no-store',signal:AbortSignal.timeout(7000)});
+    if(!response.ok)throw new Error('HTTP '+response.status);
+    const data=await response.json();if(!data.connected)throw new Error('KSC belum terhubung');
+    const names=(data.hostnames||[]).filter(x=>typeof x==='string');
+    const list=el('kscHostnames');list.replaceChildren();for(const host of names){const option=document.createElement('option');option.value=host;list.append(option)}
+    info.textContent=names.length+' hostname tersedia dari KSC. Pilih hostname yang sesuai pada workstation lalu Simpan.';
+  }catch(err){info.textContent='Tidak dapat memuat hostname: '+err.message;}
+}
+el('loadKscHosts').onclick=loadKscInventory;
+const roomAreas={
+ '1':[
+   {id:'A',name:'L1-A · Ruang kiri atas',x1:16/1550*100,y1:14/601*100,x2:250/1550*100,y2:149/601*100,color:'#7fb8ff'},
+   {id:'B',name:'L1-B · Ruang kiri bawah',x1:16/1550*100,y1:149/601*100,x2:250/1550*100,y2:283/601*100,color:'#66d4c2'},
+   {id:'C',name:'L1-C · Ruang atas tengah kiri',x1:250/1550*100,y1:14/601*100,x2:406/1550*100,y2:283/601*100,color:'#ffd36c'},
+   {id:'D',name:'L1-D · Area kerja tengah',x1:406/1550*100,y1:14/601*100,x2:719/1550*100,y2:283/601*100,color:'#ffad72'},
+   {id:'E',name:'L1-E · Area kerja tengah kanan',x1:719/1550*100,y1:14/601*100,x2:1031/1550*100,y2:283/601*100,color:'#d3a3ff'},
+   {id:'F',name:'L1-F · Ruang transisi kanan',x1:1031/1550*100,y1:14/601*100,x2:1187/1550*100,y2:283/601*100,color:'#8edb7f'},
+   {id:'G',name:'L1-G · Area kerja kanan',x1:1187/1550*100,y1:14/601*100,x2:1499/1550*100,y2:283/601*100,color:'#7fb8ff'},
+   {id:'H',name:'L1-H · Ruang bawah kiri',x1:250/1550*100,y1:344/601*100,x2:524/1550*100,y2:550/601*100,color:'#ffb27a'},
+   {id:'I',name:'L1-I · Ruang bawah tengah',x1:719/1550*100,y1:283/601*100,x2:1031/1550*100,y2:382/601*100,color:'#b1c9ff'}
+ ],
+  '2':[
+   {id:'A',name:'L2-A · Ruang atas kiri',x1:19/615*100,y1:14/650*100,x2:316/615*100,y2:97/650*100,color:'#7fb8ff'},
+   {id:'B',name:'L2-B · Ruang atas kanan',x1:452/615*100,y1:14/650*100,x2:587/615*100,y2:97/650*100,color:'#d3a3ff'},
+   {id:'C',name:'L2-C · Area kerja utama',x1:101/615*100,y1:97/650*100,x2:586/615*100,y2:455/650*100,color:'#ffd36c'},
+   {id:'D',name:'L2-D · Ruang server kiri',x1:19/615*100,y1:300/650*100,x2:101/615*100,y2:455/650*100,color:'#8edb7f'},
+   {id:'E',name:'L2-E · Koridor bawah',x1:19/615*100,y1:455/650*100,x2:587/615*100,y2:520/650*100,color:'#becddd'},
+   {id:'F',name:'L2-F · Ruang bawah kiri',x1:46/615*100,y1:520/650*100,x2:290/615*100,y2:617/650*100,color:'#7fb8ff'},
+   {id:'G',name:'L2-G · Ruang bawah kanan',x1:397/615*100,y1:520/650*100,x2:587/615*100,y2:617/650*100,color:'#ffad72'}
+  ]
+};
+function areaFor(o){return (roomAreas[floor]||[]).find(a=>o.x>=a.x1&&o.x<=a.x2&&o.y>=a.y1&&o.y<=a.y2)}
+function spreadCoord(o){
+ const a=areaFor(o);if(!a)return {x:o.x,y:o.y};
+ const v=Math.max(.7,Math.min(1.5,Number(data.roomSpacing?.[a.id]||1)));
+ const cx=(a.x1+a.x2)/2,cy=(a.y1+a.y2)/2;
+ const px=Math.min(.85,(a.x2-a.x1)*.2),py=Math.min(1.4,(a.y2-a.y1)*.2);
+ const clamp=(p,min,max)=>Math.max(min,Math.min(max,p));
+ return {x:clamp(cx+(o.x-cx)*v,a.x1+px,a.x2-px),y:clamp(cy+(o.y-cy)*v,a.y1+py,a.y2-py)};
+}
+function pos3d(o){const p=spreadCoord(o);return {x:worldX(p.x),z:worldZ(p.y)}}
+function areaLabelName(area){return (data.customAreaNames?.[area.id]||'').trim()||area.name}
+function refreshSpacing(){
+ const select=el('spacingArea');const old=select.value;
+ select.replaceChildren();for(const a of (roomAreas[floor]||[])){
+  const item=document.createElement('option');item.value=a.id;item.textContent=areaLabelName(a);select.append(item);
+ }
+ if([...select.options].some(x=>x.value===old))select.value=old;
+ syncSpacing();
+}
+function syncSpacing(){const id=el('spacingArea').value;const value=Number(data.roomSpacing?.[id]||1);el('spacingRange').value=value;el('spacingValue').textContent=value.toFixed(2)+'×'}
+function refreshAreaEditor(){
+ const select=el('roomAreaEditor');const old=select.value;
+ select.replaceChildren();for(const a of (roomAreas[floor]||[])){
+  const item=document.createElement('option');item.value=a.id;item.textContent=areaLabelName(a);select.append(item);
+ }
+ if([...select.options].some(x=>x.value===old))select.value=old;
+ else if(select.options.length)select.value=select.options[0].value;
+ syncAreaEditor();
+}
+function syncAreaEditor(){
+ const id=el('roomAreaEditor').value; const area=(roomAreas[floor]||[]).find(a=>a.id===id);
+ el('roomAreaName').value=(data.customAreaNames?.[id] ?? area?.name ?? '');
+}
+el('spacingArea').onchange=syncSpacing;
+el('spacingRange').oninput=()=>{const id=el('spacingArea').value;data.roomSpacing??={};data.roomSpacing[id]=Number(el('spacingRange').value);el('spacingValue').textContent=Number(data.roomSpacing[id]).toFixed(2)+'×';saveLocal();buildRoom()};
+el('resetSpacing').onclick=()=>{const id=el('spacingArea').value;data.roomSpacing??={};data.roomSpacing[id]=1;syncSpacing();saveLocal();buildRoom()};
+el('roomAreaEditor').onchange=syncAreaEditor;
+el('saveAreaName').onclick=()=>{const id=el('roomAreaEditor').value; if(!id)return; data.customAreaNames??={}; data.customAreaNames[id]=el('roomAreaName').value.trim()||((roomAreas[floor]||[]).find(a=>a.id===id)?.name||''); saveLocal(); refreshSpacing(); refreshAreaEditor(); buildRoom()};
+el('resetAreaName').onclick=()=>{const id=el('roomAreaEditor').value; if(!id)return; if(data.customAreaNames) delete data.customAreaNames[id]; saveLocal(); refreshSpacing(); refreshAreaEditor(); buildRoom()};
+const floorSceneConfig={
+ '1':{width:42,depth:47,planeW:44,planeD:49,span:29,camera:[43,51,47],rings:[12,7]},
+ '2':{width:35,depth:38,planeW:37,planeD:40,span:25,camera:[35,42,39],rings:[10,6]}
+};
+function sceneCfg(){return floorSceneConfig[floor]||floorSceneConfig['2']}
+function worldX(p){return (p/100-.5)*sceneCfg().width}
+function worldZ(p){return (p/100-.5)*sceneCfg().depth}
+function countArea(area){
+ const users=data.objects.filter(o=>o.type==='user');
+ const inArea=users.filter(o=>o.x>=area.x1&&o.x<area.x2&&o.y>=area.y1&&o.y<area.y2);
+ const active=inArea.filter(o=>effectiveStatus(o)==='online').length;
+ return {total:inArea.length,active};
+}
+
+let popupDismissedFor=null;
+const popup=document.createElement('div');popup.id='floatingProfile';popup.className='floating-profile hide';document.getElementById('scene').append(popup);
+el('closeDetail').onclick=()=>{document.querySelector('.layout').classList.add('detail-closed');el('openDetail').classList.remove('hide');resize()};
+el('openDetail').onclick=()=>{document.querySelector('.layout').classList.remove('detail-closed');el('openDetail').classList.add('hide');resize()};
+function getInitials(label){return String(label||'U').split(/\s+/).filter(Boolean).slice(0,2).map(v=>v[0]).join('').toUpperCase()||'U'}
+function updatePopup(){const o=getObj();if(!['3d','list'].includes(mode)||!o){popup.classList.add('hide');return}const target=document.getElementById(mode==='3d'?'scene':'sceneList');if(popup.parentElement!==target)target.append(popup);if(popupDismissedFor===selected){popup.classList.add('hide');return}popup.classList.remove('hide');popup.replaceChildren();const head=document.createElement('div');head.className='profile-head';const avatar=document.createElement('div');avatar.className='profile-avatar';avatar.textContent=getInitials(o.name||o.id);const name=document.createElement('div');name.className='profile-name';name.textContent=o.name||o.id;const role=document.createElement('div');role.className='profile-role';role.textContent=o.type==='user'?(o.device||'Workstation User'):o.type==='ap'?'Access Point':o.type==='printer'?'Printer':'Server Node';head.append(avatar,name,role);const meta=document.createElement('div');meta.className='profile-meta';const chipStatus=document.createElement('span');chipStatus.className='profile-chip '+(effectiveStatus(o)==='offline'?'offline':effectiveStatus(o)==='online'?'online':'device');chipStatus.textContent=effectiveStatus(o)==='online'?'Online':effectiveStatus(o)==='offline'?'Offline':'Unknown';const chipDevice=document.createElement('span');chipDevice.className='profile-chip device';chipDevice.textContent=o.hostname||o.id;meta.append(chipStatus);const sub=document.createElement('div');sub.className='profile-sub';sub.textContent=o.type==='user'?`IP ${o.ip||'belum tersedia dari KSC'}`:(o.haEntityId?(haLive[String(o.haEntityId).toLowerCase()]?.state||'HA menunggu sinkronisasi'):(o.ip?`IP ${o.ip}`:'Perangkat jaringan internal'));const actions=document.createElement('div');actions.className='profile-actions';
+ if(o.type==='user'){
+   const ipCopy=document.createElement('button');ipCopy.type='button';ipCopy.className='remote-action';ipCopy.textContent='⧉ Salin IP';ipCopy.title='Salin alamat IP yang tercatat dari KSC';
+   ipCopy.disabled=!o.ip;
+   ipCopy.onclick=async()=>{try{await navigator.clipboard.writeText(String(o.ip||''));ipCopy.textContent='✓ IP disalin'}catch(err){window.prompt('Salin IP perangkat:',String(o.ip||''))}};
+   actions.append(ipCopy);
+   const remote=document.createElement('button');remote.type='button';remote.className='remote-action primary';remote.textContent='↗ Remote AnyDesk';remote.title='Buka AnyDesk pada komputer ini';
+   remote.onclick=()=>{
+     const target=String(o.anydeskId||(validateKscIp(o.ip)?o.ip:'')).trim();
+     if(!/^[A-Za-z0-9][A-Za-z0-9._@-]{0,99}$/.test(target)){
+       alert('Alamat tujuan AnyDesk belum tersedia. Tunggu IP dari KSC atau isi AnyDesk ID/Alias secara manual di Detail Objek.');return;
+     }
+     // Operator has configured AnyDesk on the local workstation to accept IP destinations.
+     window.location.href='anydesk:'+target;
+   };
+   actions.append(remote);
+ }const close=document.createElement('button');close.type='button';close.className='popup-close';close.setAttribute('aria-label','Tutup kartu profil');close.title='Tutup kartu profil';close.textContent='×';close.onclick=()=>{popupDismissedFor=selected;popup.classList.add('hide')};popup.append(head,meta,sub,actions,close);}
+function refreshList(){el('nTotal').textContent=data.objects.length;el('nUsers').textContent=data.objects.filter(o=>o.type==='user').length;el('nAp').textContent=data.objects.filter(o=>o.type==='ap').length;el('nServers').textContent=data.objects.filter(o=>o.type==='server'||o.type==='printer').length;el('list').replaceChildren();data.objects.forEach(o=>{let b=document.createElement('button');b.className='obj'+(selected===o.id?' active':'');let span=document.createElement('span');let dot=document.createElement('i');dot.className='dot '+colorType(o.type);span.append(dot,document.createTextNode(nice(o)));let sm=document.createElement('small');sm.textContent=o.id;b.append(span,sm);if(o.hostname){let mark=document.createElement('span');let st=effectiveStatus(o);mark.textContent=st==='online'?'●':st==='offline'?'●':st==='unknown'?'○':'◌';mark.style.color=st==='online'?'#1cad72':st==='offline'?'#dc5369':'#9aaabc';mark.title=st;b.append(mark)}b.onclick=()=>select(o.id);el('list').append(b)})}
+function gridAxisFromObjects(axis='x'){
+ const vals=[...new Set(data.objects.filter(o=>o.type==='user').map(o=>Number(Number(o[axis]).toFixed(2))))].sort((a,b)=>a-b);
+ const filtered=[];
+ for(const v of vals){if(!filtered.length||Math.abs(v-filtered[filtered.length-1])>.6)filtered.push(v)}
+ return filtered;
+}
+function snapValue(value,points,fallback=2.5){
+ value=Math.max(0,Math.min(100,Number(value)||0));
+ if(points&&points.length){let best=points[0],dist=Math.abs(value-best);for(const p of points){const d=Math.abs(value-p);if(d<dist){dist=d;best=p}}return Number(best.toFixed(3))}
+ return Number((Math.round(value/fallback)*fallback).toFixed(3));
+}
+// V15: fixed blue reference grids for Floor 1 and Floor 2, independent of device positions.
+// All coordinates are pixels on the original 1550x601 Floor-1 image.
+const BLUE_GRID={width:1550,height:601,stepX:40,stepY:12.5,originX:16,originY:13,
+ rectangles:[[16,13,1499,284],[719,284,1031,382],[250,344,524,550]]};
+// Floor 2 corresponds to the user supplied blue grid over the 615x650 plan.
+const BLUE_GRID_FLOOR2={width:615,height:650,stepX:29,stepY:9.5,originX:19,originY:14,
+ rectangles:[[19,14,587,521],[46,521,290,618],[397,521,587,618]]};
+function activeBlueGrid(){return floor==='2'?BLUE_GRID_FLOOR2:BLUE_GRID;}
+function blueGridContains(x,y,cfg=activeBlueGrid()){
+ return cfg.rectangles.some(([x1,y1,x2,y2])=>x>=x1&&x<=x2&&y>=y1&&y<=y2);
+}
+function snapBlueGrid(x,y){
+ const cfg=activeBlueGrid(),px=Math.max(0,Math.min(cfg.width,Number(x)/100*cfg.width)),
+ py=Math.max(0,Math.min(cfg.height,Number(y)/100*cfg.height));
+ // Snap to grid cell centers, matching the yellow device markers in the reference.
+ let best=null,dist=Infinity;
+ const nearX=Math.round((px-cfg.originX-cfg.stepX/2)/cfg.stepX);
+ const nearY=Math.round((py-cfg.originY-cfg.stepY/2)/cfg.stepY);
+ for(let i=nearX-9;i<=nearX+9;i++)for(let j=nearY-9;j<=nearY+9;j++){
+  const xx=cfg.originX+cfg.stepX*(i+.5),yy=cfg.originY+cfg.stepY*(j+.5);
+  if(!blueGridContains(xx,yy))continue;
+  const d=(xx-px)**2+(yy-py)**2;
+  if(d<dist){best=[xx,yy];dist=d}
+ }
+ // For distant outside clicks, find a valid point anywhere in the footprint.
+ if(!best)for(const [x1,y1,x2,y2] of cfg.rectangles){
+  const xx=Math.max(x1+cfg.stepX/2,Math.min(x2-cfg.stepX/2,px));
+  const yy=Math.max(y1+cfg.stepY/2,Math.min(y2-cfg.stepY/2,py));
+  const ix=Math.round((xx-cfg.originX-cfg.stepX/2)/cfg.stepX),iy=Math.round((yy-cfg.originY-cfg.stepY/2)/cfg.stepY);
+  const gx=cfg.originX+cfg.stepX*(ix+.5),gy=cfg.originY+cfg.stepY*(iy+.5);
+  if(!blueGridContains(gx,gy))continue;
+  const d=(gx-px)**2+(gy-py)**2;
+  if(d<dist){best=[gx,gy];dist=d}
+ }
+ if(!best)return {x:Number(x),y:Number(y)};
+ return {x:Number((best[0]/cfg.width*100).toFixed(3)),y:Number((best[1]/cfg.height*100).toFixed(3))};
+}
+function snapPoint(x,y,type='user'){
+ return snapBlueGrid(x,y);
+}
+function drawPlanGrid(){
+ const layer=el('planGrid');if(!layer)return;
+ layer.replaceChildren();
+ const cfg=activeBlueGrid(),ns='http://www.w3.org/2000/svg';
+ const svg=document.createElementNS(ns,'svg');
+ svg.setAttribute('viewBox',`0 0 ${cfg.width} ${cfg.height}`);
+ svg.setAttribute('preserveAspectRatio','none');
+ svg.setAttribute('aria-hidden','true');
+ const defs=document.createElementNS(ns,'defs');
+ const clip=document.createElementNS(ns,'clipPath');clip.setAttribute('id','office-footprint-grid-clip');
+ for(const [x1,y1,x2,y2] of cfg.rectangles){
+  const rect=document.createElementNS(ns,'rect');
+  rect.setAttribute('x',x1);rect.setAttribute('y',y1);
+  rect.setAttribute('width',x2-x1);rect.setAttribute('height',y2-y1);
+  clip.append(rect);
+ }
+ defs.append(clip);svg.append(defs);
+ const grid=document.createElementNS(ns,'g');
+ grid.setAttribute('clip-path','url(#office-footprint-grid-clip)');
+ const line=(a,b,c,d)=>{
+  const l=document.createElementNS(ns,'line');l.setAttribute('x1',a);l.setAttribute('y1',b);
+  l.setAttribute('x2',c);l.setAttribute('y2',d);grid.append(l);
+ };
+ for(let x=cfg.originX;x<=cfg.width;x+=cfg.stepX)line(x,0,x,cfg.height);
+ for(let y=cfg.originY;y<=cfg.height;y+=cfg.stepY)line(0,y,cfg.width,y);
+ svg.append(grid);
+ for(const [x1,y1,x2,y2] of cfg.rectangles){
+  const outline=document.createElementNS(ns,'rect');outline.setAttribute('x',x1);
+  outline.setAttribute('y',y1);outline.setAttribute('width',x2-x1);
+  outline.setAttribute('height',y2-y1);outline.setAttribute('class','grid-outline');
+  svg.append(outline);
+ }
+ layer.append(svg);
+}
+function deviceOptionsForNewType(type){
+ if(type==='user')return ['PC','Laptop'];
+ if(type==='ap')return ['AP'];
+ if(type==='printer')return ['Printer'];
+ return ['Server'];
+}
+function refreshNewDeviceControls(){
+ const type=el('newObjType')?.value||'user',deviceEl=el('newObjDevice');if(!deviceEl)return;
+ const current=deviceEl.value,opts=deviceOptionsForNewType(type);deviceEl.innerHTML=opts.map(v=>`<option>${v}</option>`).join('');
+ deviceEl.value=opts.includes(current)?current:opts[0];
+}
+function toggleAddDeviceMode(force){
+ addDeviceMode=typeof force==='boolean'?force:!addDeviceMode;
+ const btn=el('addDeviceMode');if(btn){btn.classList.toggle('is-adding',addDeviceMode);btn.textContent=addDeviceMode?'✕ Batal tambah':'＋ Tambah Device'}
+ const cap=el('planCaption');if(cap)cap.textContent=addDeviceMode?'Klik area denah untuk menambah device baru. Snap grid aktif agar posisi tetap sejajar.':'Geser perangkat untuk mengubah lokasi. Snap grid aktif agar tetap sejajar.';
+}
+function generateNextObjectId(type){
+ const prefix=floor==='1'?(type==='user'?'WS-L1-':type==='ap'?'AP-L1-':type==='printer'?'PRN-L1-':'SRV-L1-'):(type==='user'?'WS-':type==='ap'?'AP-':type==='printer'?'PRN-':'SRV-');
+ let max=0;
+ for(const o of data.objects){
+  const id=String(o.id||'');
+  if(!id.startsWith(prefix))continue;
+  const n=Number.parseInt(id.slice(prefix.length),10);
+  if(Number.isFinite(n))max=Math.max(max,n);
+ }
+ return prefix+String(max+1).padStart(2,'0');
+}
+function createNewObject(type,device,x,y,name=''){
+ const o={id:generateNextObjectId(type),type,x,y,name:name||'',hostname:'',ip:'',status:'demo',facing:0,animation:'working',animationSpeed:1,avatarStyle:'cartoon',deskFacing:90};
+ o.device=type==='user'?(device||'PC'):type==='ap'?'AP':type==='printer'?'Printer':'Server';
+ return o;
+}
+function refreshPins(){drawPlanGrid();el('pins').replaceChildren();for(let o of data.objects){let b=document.createElement('button');b.className='pin '+colorType(o.type)+(selected===o.id?' selected':'');b.title=o.id+(o.name?' — '+o.name:'');b.style.left=o.x+'%';b.style.top=o.y+'%';b.textContent=o.type==='user'?'':o.type==='ap'?'A':o.type==='printer'?'P':'S';b.onpointerdown=e=>{e.preventDefault();e.stopPropagation();b.setPointerCapture(e.pointerId);let move=ev=>{const r=el('plan').getBoundingClientRect();const rawX=(ev.clientX-r.left)/r.width*100,rawY=(ev.clientY-r.top)/r.height*100;const snapped=snapPoint(rawX,rawY,o.type);o.x=snapped.x;o.y=snapped.y;b.style.left=o.x+'%';b.style.top=o.y+'%';if(el('fX'))el('fX').value=o.x.toFixed(2);if(el('fY'))el('fY').value=o.y.toFixed(2);};b.onpointermove=ev=>{if(b.hasPointerCapture(ev.pointerId))move(ev)};b.onpointerup=ev=>{if(b.hasPointerCapture(ev.pointerId))b.releasePointerCapture(ev.pointerId);saveLocal();select(o.id);buildRoom()}};el('pins').append(b)}}
+function syncLaptopPlacementFields(o){
+ if(!o)return;
+ const x=Number(o.laptopShiftX)||0,z=Number(o.laptopShiftZ)||0;
+ el('laptopShiftX').value=x;el('laptopShiftZ').value=z;
+ el('laptopShiftXValue').textContent=x.toFixed(2);el('laptopShiftZValue').textContent=z.toFixed(2);
+ el('laptopYaw').value=String(((Number(o.laptopYaw)||0)%360+360)%360);
+}
+function applyLaptopPlacementToLiveScene(o){
+ for(const entry of modelGLBConsumers){
+  if(entry.id!==o.id||!entry.laptopObject)continue;
+  entry.laptopObject.position.x=entry.laptopBaseX+(Number(o.laptopShiftX)||0);
+  entry.laptopObject.position.z=entry.laptopBaseZ+(Number(o.laptopShiftZ)||0);
+  if(entry.importedLaptop)entry.importedLaptop.rotation.y=THREE.MathUtils.degToRad(Number(o.laptopYaw)||0);
+ }
+}
+function editLaptopPlacement(){
+ const o=getObj();if(!o||String(o.device||'').toLowerCase()!=='laptop')return;
+ o.laptopShiftX=Number(el('laptopShiftX').value)||0;
+ o.laptopShiftZ=Number(el('laptopShiftZ').value)||0;
+ o.laptopYaw=Number(el('laptopYaw').value)||0;
+ syncLaptopPlacementFields(o);saveLocal();applyLaptopPlacementToLiveScene(o);
+}
+['laptopShiftX','laptopShiftZ'].forEach(id=>el(id).oninput=editLaptopPlacement);
+el('laptopYaw').onchange=editLaptopPlacement;
+el('resetLaptopPlacement').onclick=()=>{const o=getObj();if(!o)return;o.laptopShiftX=0;o.laptopShiftZ=0;o.laptopYaw=0;syncLaptopPlacementFields(o);saveLocal();applyLaptopPlacementToLiveScene(o)};
+function safeWorkerScale(value){
+ const n=Number(value);
+ return Number.isFinite(n)&&n>0?Math.max(.40,Math.min(1.40,n)):.60;
+}
+function syncWorkerScalePanel(o){
+ const active=o?.type==='user'&&Boolean(workerSetFiles[o.avatarStyle]);
+ el('workerScaleControls').classList.toggle('hide',!active);
+ const value=active?safeWorkerScale(o.workerScale):.60;
+ el('fWorkerScale').value=String(Math.round(value*100));
+ el('workerScaleValue').textContent=Math.round(value*100)+'%';
+}
+function applyWorkerScalePreview(o){
+ if(!o)return;
+ for(const instance of workerSetInstances){
+   if(instance.entry.obj.id===o.id&&instance.normalized){
+     instance.normalized.scale.setScalar(safeWorkerScale(o.workerScale));
+   }
+ }
+}
+function select(id){popupDismissedFor=null;selected=id;let o=getObj();if(o&&syncAnyDeskDefault(o))saveLocal();el('editPanel').classList.toggle('hide',!o);el('empty').classList.toggle('hide',!!o);el('selectedTitle').textContent=o?o.id+' · '+(o.name||'Belum diberi nama'):'Klik workstation atau perangkat';if(o){el('fId').value=o.id;el('fType').value=o.type;el('fName').value=o.name||'';el('fHost').value=o.hostname||'';el('fIp').value=o.ip||'';el('fAnyDesk').value=o.anydeskId||'';el('fHaEntity').value=o.haEntityId||'';el('haField').classList.toggle('hide',!['ap','printer','server'].includes(o.type));el('fDevice').value=o.device||'Network';el('laptopCalibration').classList.toggle('hide',o.type!=='user'||String(o.device||'').toLowerCase()!=='laptop');syncLaptopPlacementFields(o);el('facingBlock').classList.toggle('hide',o.type!=='user');el('deskFacingBlock').classList.toggle('hide',o.type!=='user');el('animationBlock').classList.toggle('hide',o.type!=='user');if(o.type==='user'){el('fAvatarStyle').value=Object.hasOwn(workerSetFiles,o.avatarStyle)?o.avatarStyle:'cartoon';syncWorkerScalePanel(o);el('fAnim').value=o.animation||'working';el('fSpeed').value=Number(o.animationSpeed)||1;el('speedLabel').textContent=(Number(o.animationSpeed)||1).toFixed(2).replace(/\.00$/,'.0')+'×';}el('fFacing').value=String(((Number(o.facing)||0)%360+360)%360);el('fDeskFacing').value=String(((Number(o.deskFacing ?? 90)||0)%360+360)%360);el('fX').value=o.x.toFixed(2);el('fY').value=o.y.toFixed(2)}if(!o)syncWorkerScalePanel(null);refreshList();refreshPins();highlight();updatePopup();refreshWorldLabels();if(mode==='list')renderDeviceList()}
+function saveEdit(){if(!adminToken){adminUnlock();if(!adminToken)return;}let o=getObj();if(!o)return;syncAnyDeskDefault(o);const oldHost=normalizeKscHostname(o.hostname);const newHost=normalizeKscHostname(el('fHost').value);const anydeskValue=el('fAnyDesk').value.trim();if(anydeskValue!==String(o.anydeskId||'').trim()){o.anydeskManual=!!anydeskValue&&anydeskValue!==o.ip;}if(newHost!==oldHost){o.ip='';delete o.kscIpHostname;el('fIp').value='';if(!o.anydeskManual)o.anydeskId='';}Object.assign(o,{name:el('fName').value,hostname:el('fHost').value,ip:el('fIp').value,anydeskId:o.anydeskManual?anydeskValue:'',haEntityId:el('fHaEntity').value.trim().toLowerCase(),device:el('fDevice').value,facing:o.type==='user'?Number(el('fFacing').value):o.facing,deskFacing:o.type==='user'?Number(el('fDeskFacing').value):o.deskFacing,avatarStyle:o.type==='user'?el('fAvatarStyle').value:o.avatarStyle,workerScale:o.type==='user'&&workerSetFiles[el('fAvatarStyle').value]?safeWorkerScale(workerSetFiles[o.avatarStyle]?o.workerScale:.60):(o.workerScale??.60),animation:o.type==='user'?el('fAnim').value:o.animation,animationSpeed:o.type==='user'?Number(el('fSpeed').value):o.animationSpeed,x:Math.max(0,Math.min(100,Number(el('fX').value)||0)),y:Math.max(0,Math.min(100,Number(el('fY').value)||0))});syncAnyDeskDefault(o);saveLocal();syncDeviceIpsFromKsc();select(o.id);buildRoom();if(['ap','printer','server'].includes(o.type))fetchHAStatus()}
+el('adminUnlock').onclick=adminUnlock;
+el('importBrowserConfig').onclick=importBrowserSettings;
+el('save').onclick=saveEdit;
+el('fAnim').onchange=saveEdit;
+el('fSpeed').oninput=()=>{const o=getObj();if(!o)return;o.animationSpeed=Number(el('fSpeed').value);el('speedLabel').textContent=o.animationSpeed.toFixed(2).replace(/\.00$/,'.0')+'×';saveLocal()};
+el('playAnimation').onclick=()=>{el('fAnim').value='working';saveEdit()};
+el('pauseAnimation').onclick=()=>{el('fAnim').value='paused';saveEdit()};
+el('fAvatarStyle').onchange=saveEdit;
+el('fWorkerScale').addEventListener('input',()=>{
+ const o=getObj();if(!adminToken||!o||o.type!=='user'||!workerSetFiles[o.avatarStyle])return;
+ const percent=Number(el('fWorkerScale').value);
+ o.workerScale=safeWorkerScale(percent/100);
+ el('workerScaleValue').textContent=Math.round(o.workerScale*100)+'%';
+ applyWorkerScalePreview(o);
+});
+el('fWorkerScale').addEventListener('change',()=>{
+ const o=getObj();if(!adminToken||!o||o.type!=='user'||!workerSetFiles[o.avatarStyle])return;
+ o.workerScale=safeWorkerScale(Number(el('fWorkerScale').value)/100);
+ applyWorkerScalePreview(o);
+ saveLocal();
+});
+el('resetWorkerScale').onclick=()=>{
+ const o=getObj();if(!adminToken||!o||o.type!=='user'||!workerSetFiles[o.avatarStyle])return;
+ o.workerScale=.60;el('fWorkerScale').value='60';el('workerScaleValue').textContent='60%';
+ applyWorkerScalePreview(o);saveLocal();
+};
+el('fAnyDesk').onchange=saveEdit;el('fDevice').onchange=saveEdit;el('fHaEntity').onchange=saveEdit;el('fFacing').onchange=saveEdit;el('fDeskFacing').onchange=saveEdit;for(const [id,delta] of [['rotateLeft',-90],['rotateRight',90]])el(id).onclick=()=>{const o=getObj();if(!o||o.type!=='user')return;el('fFacing').value=String(((Number(el('fFacing').value)+delta)%360+360)%360);saveEdit()};for(const [id,delta] of [['deskRotateLeft',-90],['deskRotateRight',90]])el(id).onclick=()=>{const o=getObj();if(!o||o.type!=='user')return;el('fDeskFacing').value=String(((Number(el('fDeskFacing').value)+delta)%360+360)%360);saveEdit()};el('simulate').onclick=()=>{const o=getObj();if(!o)return;o.status=o.status==='online'?'offline':'online';saveLocal();buildRoom()};
+refreshNewDeviceControls();
+el('newObjType').onchange=refreshNewDeviceControls;
+el('addDeviceMode').onclick=()=>{if(!adminToken){adminUnlock();if(!adminToken)return;}toggleAddDeviceMode()};
+el('plan').addEventListener('click',e=>{
+ if(!addDeviceMode)return;
+ if(e.target.closest('.pin'))return;
+ if(!adminToken){adminUnlock();if(!adminToken)return;}
+ const r=el('plan').getBoundingClientRect();
+ const rawX=(e.clientX-r.left)/r.width*100,rawY=(e.clientY-r.top)/r.height*100;
+ const type=el('newObjType').value,device=el('newObjDevice').value,name=el('newObjName').value.trim();
+ const pos=snapPoint(rawX,rawY,type),obj=createNewObject(type,device,pos.x,pos.y,name);
+ data.objects.push(obj);saveLocal();refreshList();refreshPins();buildRoom();select(obj.id);toggleAddDeviceMode(false);
+});
+let panEnabled=false;
+function configurePanMode(){
+ if(!controls)return;
+ controls.mouseButtons.LEFT=panEnabled?THREE.MOUSE.PAN:THREE.MOUSE.ROTATE;
+ controls.mouseButtons.RIGHT=panEnabled?THREE.MOUSE.ROTATE:THREE.MOUSE.PAN;
+ controls.touches.ONE=panEnabled?THREE.TOUCH.PAN:THREE.TOUCH.ROTATE;
+ controls.touches.TWO=THREE.TOUCH.DOLLY_PAN;
+ el('panMode').classList.toggle('is-active',panEnabled);
+ el('panMode').setAttribute('aria-pressed',String(panEnabled));
+ el('panMode').textContent=panEnabled?'✥ Mode Geser: ON':'✥ Mode Geser: OFF';
+ el('viewHint').textContent=panEnabled?'Klik kiri: geser · Klik kanan: putar · Scroll: zoom':'Klik kiri: putar · Klik kanan: geser · Scroll: zoom';
+}
+el('panMode').onclick=()=>{panEnabled=!panEnabled;configurePanMode()};
+function setMode(m){
+ if(!['3d','list','2d'].includes(m))m='3d';
+ if(m==='2d'&&!adminToken){alert('Editor Denah hanya tersedia saat Admin aktif.');return;}
+ mode=m;
+ el('scene').classList.toggle('hide',m!=='3d');
+ el('scene2d').classList.toggle('hide',m!=='2d');
+ el('sceneList').classList.toggle('hide',m!=='list');
+ for(const [id,value] of [['mode3d','3d'],['mode2d','2d'],['modeList','list']])el(id).classList.toggle('primary',m===value);
+ el('viewHint').textContent=m==='3d'?'Klik kiri: putar · Klik kanan: geser · Scroll: zoom':m==='list'?'Klik baris untuk membuka Detail Objek':'Geser titik untuk mengubah koordinat';
+ if(m==='3d'){resize();buildRoom()}else if(m==='2d'){refreshPins();toggleAddDeviceMode(false)}else{toggleAddDeviceMode(false);renderDeviceList()}
+ updatePopup();
+}
+el('cameraHome').onclick=()=>{const c=sceneCfg().camera;camera.position.set(c[0],c[1],c[2]);controls.target.set(0,0,0);controls.update();resize()};
+el('ambientToggle').onclick=()=>{ambientEnabled=!ambientEnabled;el('ambientToggle').textContent=ambientEnabled?'⌨ Typing Only':'⌨ Typing Only'};
+el('mode3d').onclick=()=>setMode('3d');el('mode2d').onclick=()=>setMode('2d');el('modeList').onclick=()=>setMode('list');
+el('export').onclick=()=>{if(!adminToken)return;const b=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download='office-lantai'+floor+'-room01.json';a.click();setTimeout(()=>URL.revokeObjectURL(u),500)};
+el('importBtn').onclick=()=>{if(!adminToken)adminUnlock();if(adminToken)el('importFile').click()};el('importFile').onchange=async e=>{try{let v=JSON.parse(await e.target.files[0].text());if(v.roomId!==source.roomId||!Array.isArray(v.objects))throw Error('File JSON tidak sesuai lantai aktif');data=v;saveLocal();selected=null;refreshSpacing();refreshList();refreshPins();select(null);buildRoom()}catch(err){alert('Gagal impor: '+err.message)}e.target.value=''};
+el('reset').onclick=()=>{if(!adminToken){adminUnlock();if(!adminToken)return;}if(confirm('Kembalikan koordinat dan nama ke layout awal?')){data=structuredClone(source);saveLocal();selected=null;refreshSpacing();select(null);buildRoom()}};
+function box(w,h,d,color,x,y,z,parent=roomGroup){let m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),new THREE.MeshStandardMaterial({color,roughness:.8}));m.position.set(x,y,z);parent.add(m);return m}
+function sphere(rad,color,x,y,z,parent=roomGroup){let m=new THREE.Mesh(new THREE.SphereGeometry(rad,12,10),new THREE.MeshStandardMaterial({color}));m.position.set(x,y,z);parent.add(m);return m}
+// v19: self-contained procedural isometric materials and decorations (no third-party art assets)
+function cylinder(radTop,radBottom,height,color,x,y,z,parent=roomGroup,segments=12){
+ const m=new THREE.Mesh(new THREE.CylinderGeometry(radTop,radBottom,height,segments),new THREE.MeshStandardMaterial({color,roughness:.88}));
+ m.position.set(x,y,z);parent.add(m);return m;
+}
+function planter(x,z,parent=roomGroup,scale=1){
+ const g=new THREE.Group();g.position.set(x,0,z);g.scale.setScalar(scale);parent.add(g);
+ cylinder(.19,.15,.28,0xd5a58f,0,.17,0,g);cylinder(.16,.16,.025,0x4b7161,0,.30,0,g);
+ for(let i=0;i<5;i++){const a=i*Math.PI*2/5;const leaf=sphere(.15, i%2?0x5ba48e:0x76bf94,Math.cos(a)*.15,.53+(i%2)*.09,Math.sin(a)*.15,g);leaf.scale.set(.55,1.65,.85)}
+ return g;
+}
+function softRug(w,d,color,x,z){
+ const m=softBox(w,.024,d,color,x,-.026,z);m.material.roughness=1;return m;
+}
+function overheadLamp(x,z){
+ const stem=softBox(.035,.40,.035,0xc2d0dd,x,2.64,z);
+ const cap=cylinder(.35,.42,.15,0xf4dfb3,x,2.45,z);
+ const glow=new THREE.PointLight(0xffe7bd,.40,3.4);glow.position.set(x,2.35,z);roomGroup.add(glow);
+ roomDecor.push(stem,cap,glow);
+}
+
+// v29: Reusable lightweight procedural tile textures (all generated in-browser).
+const vividPalettes=[
+ {floor:'#ffcdbd',line:'#de8f72',desk:0xf1b89c,chair:0xee907b,accent:0xff734f},
+ {floor:'#c6e7ff',line:'#69afe8',desk:0xc7e8fb,chair:0x629cdb,accent:0x2d8cff},
+ {floor:'#d0f6dc',line:'#74c794',desk:0xc9f2e5,chair:0x53ad96,accent:0x1dbf92},
+ {floor:'#dfd4ff',line:'#a381ea',desk:0xe7d8fa,chair:0xa27cdd,accent:0x8f52ff},
+ {floor:'#ffe1a6',line:'#d9a947',desk:0xffdfb5,chair:0xe6aa5d,accent:0xf2a414},
+ {floor:'#c9f4fb',line:'#5cbccc',desk:0xd4e9fc,chair:0x82b4d7,accent:0x1ea8c6},
+ {floor:'#def6b5',line:'#94c64d',desk:0xe4f1d5,chair:0x8abd7d,accent:0x68b93d},
+ {floor:'#ffd3e2',line:'#d97ea6',desk:0xffe3e9,chair:0xd788a0,accent:0xe86493},
+ {floor:'#d7e3ff',line:'#84a3ee',desk:0xecedff,chair:0x849add,accent:0x5d7df5}
+];
+let sceneTextureCache=new Map();
+function roomColorFor(o){const i=(roomAreas[floor]||[]).findIndex(a=>o.x>=a.x1&&o.x<=a.x2&&o.y>=a.y1&&o.y<=a.y2);return vividPalettes[(i<0?0:i)%vividPalettes.length]}
+// Modern office finish: warm oak planks, natural grain and soft seams.
+function patternedFloorTexture(palette){
+ const key='office-warm-oak-2026';
+ if(sceneTextureCache.has(key))return sceneTextureCache.get(key);
+ const c=document.createElement('canvas');c.width=512;c.height=512;
+ const ctx=c.getContext('2d');
+ ctx.fillStyle='#d9b48a';ctx.fillRect(0,0,512,512);
+ const plankH=48;
+ for(let row=0;row<11;row++){
+   const y=row*plankH,offset=(row%3)*80-160;
+   for(let x=offset;x<512;x+=192){
+     const tone=['#ddba91','#d9b189','#e3c29b','#d5ac81','#e0bc94'][(row*7+Math.floor((x-offset)/192)*3+50)%5];
+     ctx.fillStyle=tone;ctx.fillRect(x+1,y+1,190,46);
+     const shine=ctx.createLinearGradient(0,y,0,y+48);
+     shine.addColorStop(0,'rgba(255,255,255,.13)');shine.addColorStop(.48,'rgba(255,255,255,0)');shine.addColorStop(1,'rgba(74,41,18,.055)');
+     ctx.fillStyle=shine;ctx.fillRect(x+1,y+1,190,46);
+     // Fine grain strokes along the wood boards, not square tiles.
+     for(let k=0;k<11;k++){
+       const yy=y+4+k*3.7;
+       ctx.strokeStyle=k%3===0?'rgba(117,76,41,.075)':'rgba(255,247,227,.13)';
+       ctx.lineWidth=.6;ctx.beginPath();ctx.moveTo(x+8,yy);
+       ctx.bezierCurveTo(x+70,yy+(k%3)-1,x+120,yy+1,x+184,yy+(k%2));ctx.stroke();
+     }
+     ctx.strokeStyle='rgba(107,69,41,.15)';ctx.lineWidth=1;
+     ctx.strokeRect(x+.5,y+.5,191,47);
+   }
+ }
+ const t=new THREE.CanvasTexture(c);
+ t.colorSpace=THREE.SRGBColorSpace;t.wrapS=t.wrapT=THREE.RepeatWrapping;t.anisotropy=8;
+ sceneTextureCache.set(key,t);return t;
+}
+// The natural wood parquet material is extracted from the user's 4x4 GLB tile.
+// Preserve existing floor polygons; the GLB's own plane is not drawn over desks.
+let parquetBaseTexture=null,parquetLoading=false;
+function parquetMaterial(width,depth){
+ if(!parquetBaseTexture){
+   if(!parquetLoading){
+     parquetLoading=true;
+     new THREE.TextureLoader().load('assets/parquet-floor-texture.png?v=7',tex=>{
+       tex.colorSpace=THREE.SRGBColorSpace;
+       tex.wrapS=tex.wrapT=THREE.RepeatWrapping;
+       tex.anisotropy=Math.min(8,renderer?.capabilities.getMaxAnisotropy()||8);
+       tex.generateMipmaps=true;
+       tex.minFilter=THREE.LinearMipmapLinearFilter;
+       tex.magFilter=THREE.LinearFilter;
+       parquetBaseTexture=tex;
+       if(scene)buildRoom();
+     },undefined,error=>{console.warn('Parquet texture load failed; using oak fallback',error);});
+   }
+   return null;
+ }
+ const tex=parquetBaseTexture.clone();tex.needsUpdate=true;
+ // GLB material covers a 4x4 unit tile; keep the same plank scale on each floor.
+ // Lower repetition prevents aliasing / shimmering at oblique camera angles.
+ tex.repeat.set(Math.max(.1,width/9),Math.max(.1,depth/9));
+ return new THREE.MeshStandardMaterial({map:tex,color:0xffffff,roughness:.85,metalness:0,side:THREE.FrontSide});
+}
+function addParquetPanel(x1,z1,x2,z2,y){
+ const w=Math.abs(x2-x1),d=Math.abs(z2-z1);
+ if(w<.1||d<.1)return;
+ const mat=parquetMaterial(w,d)||new THREE.MeshStandardMaterial({map:patternedFloorTexture().clone(),roughness:.90,metalness:0});
+ const panel=new THREE.Mesh(new THREE.PlaneGeometry(w,d),mat);
+ panel.rotation.x=-Math.PI/2;
+ panel.position.set((x1+x2)/2,y,(z1+z2)/2);
+ panel.userData.floorPatch=true;
+ roomGroup.add(panel);
+}
+function parquetFootprint(){
+ // Full building footprints include hallways; room overlays are layered slightly higher.
+ if(floor==='1'){
+   for(const [x1,y1,x2,y2] of [[16,13,1499,284],[250,344,524,550],[719,283,1031,382]]){
+     addParquetPanel(worldX(x1/1550*100),worldZ(y1/601*100),worldX(x2/1550*100),worldZ(y2/601*100),-.025);
+   }
+ }else{
+   for(const [x1,y1,x2,y2] of [[19,14,587,521],[46,521,290,618],[397,521,587,618]]){
+     addParquetPanel(worldX(x1/615*100),worldZ(y1/650*100),worldX(x2/615*100),worldZ(y2/650*100),-.025);
+   }
+ }
+}
+function vividRoomFloors(){
+ // One parquet mesh per actual footprint; no overlapping room overlays.
+ // This prevents UV discontinuities and z-fighting on Floor 2.
+ parquetFootprint();
+}
+function wallTrimColor(i){return 0x383f44}
+
+// Outdoor landscape — independent of device positions, KSC and Home Assistant.
+// Low-poly landscaping is deliberately positioned OUTSIDE the building footprint.
+// V12: only server-rack uses an imported GLB. Trees are lightweight procedural meshes.
+// Reuse server GPU geometry and textures; retain the procedural rack fallback.
+const officeAssetLoader=new GLTFLoader();
+const officeAssetCache=new Map();
+function loadOfficeAsset(kind){
+ if(kind!=='server')return Promise.reject(new Error('Unsupported office asset: '+kind));
+ const file='server_rack.glb';
+ if(!officeAssetCache.has(file))officeAssetCache.set(file,new Promise((resolve,reject)=>{
+  officeAssetLoader.load('assets/models/'+file+'?v=12',gltf=>resolve(gltf.scene),undefined,reject);
+ }).catch(err=>{officeAssetCache.delete(file);throw err}));
+ return officeAssetCache.get(file);
+}
+function placeOfficeAsset(source,target,height,maxWidth,maxDepth){
+ const clone=source.clone(true);
+ // Normalize against original bounds; offset both vertical base and X/Z centroid.
+ clone.updateMatrixWorld(true);
+ const b=new THREE.Box3().setFromObject(clone);
+ if(b.isEmpty())throw new Error('GLB mesh bounds empty');
+ const size=b.getSize(new THREE.Vector3()),center=b.getCenter(new THREE.Vector3());
+ if(Math.min(size.x,size.y,size.z)<0.00001)throw new Error('GLB bounds invalid');
+ const scale=Math.min(height/size.y,maxWidth/size.x,maxDepth/size.z);
+ clone.scale.setScalar(scale);
+ clone.position.set(-center.x*scale,-b.min.y*scale,-center.z*scale);
+ clone.traverse(node=>{if(node.isMesh)node.userData.sharedOfficeAsset=true});
+ target.add(clone);
+ return clone;
+}
+function addOutdoorGarden(){
+ const cfg=sceneCfg(), extentX=cfg.planeW/2+2.4,extentZ=cfg.planeD/2+2.5;
+ const garden=new THREE.Group();garden.name='Outdoor Garden';roomGroup.add(garden);
+ const grass=new THREE.Mesh(new THREE.PlaneGeometry(extentX*2,extentZ*2),new THREE.MeshStandardMaterial({color:0x81c783,roughness:.97,side:THREE.DoubleSide}));
+ grass.rotation.x=-Math.PI/2;grass.position.y=-.29;garden.add(grass);
+ // Planting border and natural variation; don't obscure room floors.
+ const lawnEdge=new THREE.Mesh(new THREE.BoxGeometry(extentX*2+.14,.09,extentZ*2+.14),new THREE.MeshStandardMaterial({color:0x5b9e69,roughness:1}));
+ lawnEdge.position.y=-.37;garden.add(lawnEdge);
+ // Put paving outside the architectural footprint, never on workstation coordinates.
+ function path(x,z,w,d){
+   const g=new THREE.Group();g.position.set(x,-.247,z);garden.add(g);
+   const backing=new THREE.Mesh(new THREE.BoxGeometry(w,.065,d),new THREE.MeshStandardMaterial({color:0xd5c8ac,roughness:.92}));g.add(backing);
+   const length=Math.max(w,d),horizontal=w>=d;
+   for(let u=-length/2+.26;u<length/2-.12;u+=.53){
+     const tile=new THREE.Mesh(new THREE.BoxGeometry(horizontal?.47:Math.max(.26,w-.12),.019,horizontal?Math.max(.26,d-.12):.47),new THREE.MeshStandardMaterial({color:(Math.round(u*10)%3===0)?0xece2ce:0xf8edda,roughness:.82}));
+     tile.position.set(horizontal?u:0,.045,horizontal?0:u);g.add(tile);
+   }
+ }
+ if(floor==='1'){
+   path(0,-cfg.planeD/2-1.18,cfg.planeW+1.25,.82);
+   path(cfg.planeW/2+1.04,0,.78,cfg.planeD+1.3);
+ }else{
+   path(0,-cfg.planeD/2-1.13,cfg.planeW+1.2,.85);
+   path(-cfg.planeW/2-1.06,0,.74,cfg.planeD+1.2);
+ }
+ // Low-poly procedural tree, no external GLB or additional network request.
+ function tree(x,z,i){
+   const g=new THREE.Group();g.position.set(x,-.23,z);garden.add(g);
+   const height=1.16+(i%4)*.12;
+   const trunk=new THREE.Mesh(new THREE.CylinderGeometry(.105,.16,height,7),new THREE.MeshStandardMaterial({color:0x936748,roughness:1}));trunk.position.y=height/2;g.add(trunk);
+   for(let j=0;j<3;j++){
+     const leaf=new THREE.Mesh(new THREE.DodecahedronGeometry(.53+j*.07,0),new THREE.MeshStandardMaterial({color:[0x328b58,0x4eae69,0x67bc73,0x3c9d65][(i+j)%4],roughness:1,flatShading:true}));
+     leaf.scale.set(1.1,.77,1.0);leaf.position.set(j%2?.16:-.13,height+.25+j*.35,j%2?-.13:.12);g.add(leaf);
+   }
+   // V12: keep the procedural tree; do not load a heavyweight tree GLB.
+   return g;
+ }
+ function bush(x,z,i){
+   const g=new THREE.Group();g.position.set(x,-.22,z);garden.add(g);
+   for(let j=0;j<3;j++){
+     const m=new THREE.Mesh(new THREE.IcosahedronGeometry(.21+(i+j)%3*.045,0),new THREE.MeshStandardMaterial({color:[0x5fae6d,0x74ba78,0x86c987][(i+j)%3],flatShading:true,roughness:1}));
+     m.position.set((j-1)*.19,.17+(j%2)*.06,(j%2)*.12);g.add(m);
+   }
+ }
+ const treeSlots=[];
+ // Perimeter rows only — keep glass walls, devices and paths unobstructed.
+ for(let x=-extentX+1.15;x<=extentX-1;x+=3.5){treeSlots.push([x,extentZ-1.0]);treeSlots.push([x,-extentZ+1.0]);}
+ for(let z=-extentZ+3.0;z<=extentZ-2.6;z+=3.5){treeSlots.push([-extentX+1.0,z]);treeSlots.push([extentX-1.0,z]);}
+ treeSlots.forEach(([x,z],i)=>{
+   const onPath=(floor==='1'&&(z<0&&Math.abs(z+cfg.planeD/2+1.18)<.8 || x>0&&Math.abs(x-cfg.planeW/2-1.04)<.7)) ||
+     (floor==='2'&&(z<0&&Math.abs(z+cfg.planeD/2+1.13)<.8 || x<0&&Math.abs(x+cfg.planeW/2+1.06)<.7));
+   if(!onPath)tree(x,z,i);
+ });
+ for(let i=0;i<30;i++){
+   const side=i%4,k=Math.floor(i/4),x=side<2?-extentX+1.9+k*2.0:(side===2?-extentX+.55:extentX-.55),
+         z=side<2?(side===0?-extentZ+2.0:extentZ-2.0):-extentZ+1.8+k*2.05;
+   if(x<extentX-.4&&z<extentZ-.4)bush(x,z,i);
+ }
+ // Benches & solar garden lamps on the edges, oriented away from the building.
+ function bench(x,z,rot){
+   const g=new THREE.Group();g.position.set(x,-.21,z);g.rotation.y=rot;garden.add(g);
+   const wood=new THREE.MeshStandardMaterial({color:0xb67c50,roughness:.9});
+   const metal=new THREE.MeshStandardMaterial({color:0x4f6770,roughness:.7});
+   const block=(w,h,d,xx,yy,zz,mat)=>{const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat);m.position.set(xx,yy,zz);g.add(m)};
+   for(const dz of [-.13,.13])block(1.15,.055,.17,0,.46,dz,wood);
+   block(1.15,.11,.12,0,.77,-.25,wood);
+   for(const dx of [-.45,.45])block(.07,.43,.07,dx,.22,-.02,metal);
+ }
+ function lamp(x,z){
+   const g=new THREE.Group();g.position.set(x,-.22,z);garden.add(g);
+   const pole=new THREE.Mesh(new THREE.CylinderGeometry(.045,.055,1.65,7),new THREE.MeshStandardMaterial({color:0x526c7c,roughness:.6}));pole.position.y=.84;g.add(pole);
+   const cap=new THREE.Mesh(new THREE.CylinderGeometry(.24,.17,.15,8),new THREE.MeshStandardMaterial({color:0x3f5969}));cap.position.y=1.68;g.add(cap);
+   const light=new THREE.Mesh(new THREE.SphereGeometry(.12,10,8),new THREE.MeshBasicMaterial({color:0xffe9ac}));light.position.y=1.56;g.add(light);
+ }
+ if(floor==='1'){
+   bench(-extentX+3.8,extentZ-1.45,0);bench(extentX-3.7,extentZ-1.45,0);
+   for(const x of [-extentX+5,0,extentX-5])lamp(x,-cfg.planeD/2-1.22);
+ }else{
+   bench(extentX-2.0,extentZ-3.4,Math.PI/2);bench(extentX-2.0,-extentZ+3.4,Math.PI/2);
+   for(const x of [-extentX+5,0,extentX-5])lamp(x,-cfg.planeD/2-1.16);
+ }
+}
+
+function isometricDecor(){
+ // Per-room rugs and carefully restrained procedural furniture.
+ const areas=roomAreas[floor]||[];
+ for(let i=0;i<areas.length;i++){
+  const a=areas[i];const cx=worldX((a.x1+a.x2)/2),cz=worldZ((a.y1+a.y2)/2);
+  const rw=Math.abs(worldX(a.x2)-worldX(a.x1));const rd=Math.abs(worldZ(a.y2)-worldZ(a.y1));
+  // White room overlays/rugs removed per request. Keep only the main parquet floor.
+  // if(rw>3&&rd>3){
+  //  const rug=softRug(Math.min(rw*.66,4.2),Math.min(rd*.57,3.3),[0xf8d3c6,0xc7dfff,0xbde6da,0xe6d4fb,0xffe5bd,0xc7eaf4][i%6],cx,cz);roomDecor.push(rug);
+  // }
+  if(rw>2.8&&rd>2.8){
+   const px=worldX(a.x1)+Math.min(.62,rw*.14),pz=worldZ(a.y1)+Math.min(.67,rd*.15);
+   const nearby=data.objects.some(o=>{const p=pos3d(o);return Math.hypot(p.x-px,p.z-pz)<.72});
+   if(!nearby){roomDecor.push(planter(px,pz,roomGroup,1.15));if(rw>5&&rd>5)roomDecor.push(planter(worldX(a.x2)-.7,worldZ(a.y2)-.7,roomGroup,.85));}
+  }
+ }
+}
+
+// V31 original procedural furnishing set, inspired by Ruang's modelling approach.
+// No third-party source code, textures, or 3D models are embedded.
+function modelShelf(root,x,z,accent=0x83b6d7){
+ const g=new THREE.Group();g.position.set(x,0,z);root.add(g);
+ softBox(.94,1.70,.31,0xe5b98b,0,.88,0,g);
+ softBox(.82,1.48,.033,0xfaf0de,0,.9,.17,g);
+ for(let level=0;level<4;level++){
+   const yy=.35+level*.40;
+   softBox(.88,.065,.38,0xa8785f,0,yy,0,g);
+   for(let k=0;k<6;k++){
+     const col=[0x5c9edd,0xf49c87,0x78bca4,0x9d91d6,0xf2c170,accent][(k+level)%6];
+     softBox(.093,.19+((k+level)%3)*.045,.19,col,-.32+k*.125,yy+.13,.025,g);
+   }
+ }
+ softBox(.08,1.75,.41,0x926d60,-.47,.88,.03,g);
+ softBox(.08,1.75,.41,0x926d60,.47,.88,.03,g);
+ return g;
+}
+function modelLounge(root,x,z,accent=0x6ca8d8){
+ const g=new THREE.Group();g.position.set(x,0,z);root.add(g);
+ softBox(1.50,.24,.63,accent,0,.31,.0,g);
+ softBox(1.54,.65,.20,accent,0,.56,-.34,g);
+ softBox(.19,.47,.72,accent,-.73,.47,-.03,g);
+ softBox(.19,.47,.72,accent,.73,.47,-.03,g);
+ for(let dx of [-.34,.34]) softBox(.43,.065,.45,0xf0ebfa,dx,.47,.05,g);
+ for(let dx of [-.52,.52]) for(let dz of [-.24,.24])softBox(.09,.20,.09,0x756a68,dx,.12,dz,g);
+ return g;
+}
+function modelWhiteboard(root,x,z){
+ const g=new THREE.Group();g.position.set(x,0,z);root.add(g);
+ softBox(1.25,.75,.08,0xb3c9d9,0,1.41,0,g);
+ softBox(1.12,.62,.085,0xfafcfe,0,1.41,.01,g);
+ for(let i=0;i<4;i++){
+   const h=.12+(i%3)*.045;
+   softBox(.12,h,.018,[0x4b9cdf,0x73beac,0xf0a47e,0x9c88df][i],-.39+i*.25,1.20+h/2,.07,g);
+ }
+ softBox(.80,.024,.06,0xaab6c7,-.09,1.75,.08,g);
+ return g;
+}
+function modelLocker(root,x,z){
+ const g=new THREE.Group();g.position.set(x,0,z);root.add(g);
+ softBox(.86,1.27,.42,0x9dc8da,0,.65,0,g);
+ for(const dx of [-.21,.21]){
+   softBox(.40,1.12,.024,0xd6ecf4,dx,.65,.222,g);
+   softBox(.025,.13,.035,0x7391a5,dx+.12,.67,.252,g);
+   for(let k=0;k<3;k++) softBox(.19,.018,.035,0x91b6c7,dx,.98+k*.055,.251,g);
+ }
+ return g;
+}
+function enhanceOfficeAreas(){
+ const areas=roomAreas[floor]||[];
+ for(let i=0;i<areas.length;i++){
+   const a=areas[i],width=Math.abs(worldX(a.x2)-worldX(a.x1)),depth=Math.abs(worldZ(a.y2)-worldZ(a.y1));
+   if(width<3.3||depth<3.2)continue;
+   const spots=[
+     {x:worldX(a.x1)+Math.min(1.0,width*.20),z:worldZ(a.y1)+Math.min(.95,depth*.20),kind:i%3},
+     {x:worldX(a.x2)-Math.min(1.0,width*.20),z:worldZ(a.y2)-Math.min(.95,depth*.20),kind:(i+1)%4},
+   ];
+   for(let j=0;j<spots.length;j++){
+     const p=spots[j];
+     const nearby=data.objects.some(o=>{const q=pos3d(o);return Math.hypot(q.x-p.x,q.z-p.z)<1.65});
+     if(nearby)continue;
+     const model=(p.kind===0?modelShelf:p.kind===1?modelLounge:p.kind===2?modelLocker:modelWhiteboard)(roomGroup,p.x,p.z,[0x74b4dc,0x89bfa7,0xa890db][i%3]);
+     roomDecor.push(model);
+   }
+ }
+}
+
+function labelMesh(o,root){let group=new THREE.Group();group.userData.item=o.id;root.add(group);return group}
+// Low-poly animation model: independent limbs and seated posture. No external avatar assets.
+function softBox(w,h,d,color,x,y,z,parent=roomGroup,r=.05){
+ const m=box(w,h,d,color,x,y,z,parent);m.material.roughness=.92;return m;
+}
+
+function textSprite(lines,{width=330,height=110,bg='#ffffff',fg='#24364e',sub='#8191a4',accent='#5bcfa0'}={}){
+ const c=document.createElement('canvas');c.width=width;c.height=height;const ctx=c.getContext('2d');
+ ctx.shadowColor='rgba(54,72,102,.18)';ctx.shadowBlur=14;ctx.shadowOffsetY=5;
+ ctx.fillStyle=bg;ctx.beginPath();ctx.roundRect(8,8,width-16,height-16,18);ctx.fill();ctx.shadowColor='transparent';
+ ctx.fillStyle=accent;ctx.beginPath();ctx.roundRect(18,18,10,height-36,8);ctx.fill();
+ ctx.fillStyle=fg;ctx.font='bold 24px Arial';ctx.fillText(lines[0]||'',44,45);
+ ctx.fillStyle=sub;ctx.font='18px Arial';ctx.fillText(lines[1]||'',44,74);
+ const texture=new THREE.CanvasTexture(c);texture.colorSpace=THREE.SRGBColorSpace;
+ return new THREE.Sprite(new THREE.SpriteMaterial({map:texture,transparent:true,depthTest:false}));
+}
+function addAreaLabels(){
+ const depth=sceneCfg().depth;
+ for(const area of (roomAreas[floor]||[])){
+   const cnt=countArea(area);
+   const label=textSprite([areaLabelName(area), `${cnt.active}/${cnt.total} aktif`],{accent:area.color});
+   label.visible=false;
+   label.scale.set(floor==='1'?2.35:2.6, floor==='1'?.82:.88,1);
+   label.position.set(worldX((area.x1+area.x2)/2),2.65,worldZ((area.y1+area.y2)/2));
+   roomGroup.add(label);
+   roomDecor.push(label);
+ }
+}
+let labelsEnabled=true;
+let roomLabelsEnabled=true;
+let apSignalsEnabled=true;
+try{roomLabelsEnabled=localStorage.getItem('vo_show_room_labels')!=='false'}catch{}
+try{apSignalsEnabled=localStorage.getItem('vo_show_ap_signals')!=='false'}catch{}
+function refreshRoomLabelButton(){
+ const button=el('toggleRoomLabels');
+ button.textContent=roomLabelsEnabled?'🏠 Nama Ruangan: ON':'🏠 Nama Ruangan: OFF';
+ button.setAttribute('aria-pressed',String(roomLabelsEnabled));
+ button.classList.toggle('is-off',!roomLabelsEnabled);
+}
+function refreshSignalButton(){
+ const button=el('toggleSignals');
+ if(!button)return;
+ button.textContent=apSignalsEnabled?'📶 Sinyal AP: ON':'📶 Sinyal AP: OFF';
+ button.setAttribute('aria-pressed',String(apSignalsEnabled));
+ button.classList.toggle('is-off',!apSignalsEnabled);
+}
+
+let labelItems=[];
+const projectedTag=new THREE.Vector3();
+function refreshWorldLabels(){
+ const layer=el('worldLabels');if(!layer)return;
+ layer.replaceChildren();labelItems=[];
+ for(const o of data.objects){
+   if(o.type!=='user'&&o.type!=='server'&&o.type!=='ap'&&o.type!=='printer')continue;
+   const div=document.createElement('div');div.className='world-tag';
+   div.dataset.status=effectiveStatus(o);if(selected===o.id)div.classList.add('is-selected');
+   const title=document.createElement('span');title.className='tag-title';title.textContent=o.name?.trim()||o.id;
+   const subtitle=document.createElement('span');subtitle.className='tag-status';
+   const status=effectiveStatus(o);subtitle.textContent=status==='online'?'● ONLINE':status==='offline'?'● OFFLINE':'● UNKNOWN';
+   div.append(title,subtitle);layer.append(div);
+   const pos=pos3d(o);labelItems.push({el:div,x:pos.x,y:o.type==='user'?3.07:2.90,z:pos.z});
+ }
+ for(const a of roomAreas[floor]||[]){
+   const div=document.createElement('div');div.className='world-tag area-tag';
+   const title=document.createElement('span');title.className='tag-title';title.textContent=areaLabelName(a);
+   const subtitle=document.createElement('span');subtitle.className='tag-status';const count=countArea(a);
+   subtitle.textContent=count.active+'/'+count.total+' aktif';div.append(title,subtitle);layer.append(div);
+   labelItems.push({el:div,isRoom:true,x:worldX((a.x1+a.x2)/2),y:2.66,z:worldZ((a.y1+a.y2)/2)});
+ }
+ updateWorldLabels();
+}
+function updateWorldLabels(){
+ const layer=el('worldLabels');if(!layer||!camera||!renderer)return;
+ if(!labelsEnabled||mode!=='3d'){layer.style.display='none';return}
+ layer.style.display='block';
+ const width=layer.clientWidth,height=layer.clientHeight;
+ if(!width||!height)return;
+ camera.updateMatrixWorld();
+ for(const tag of labelItems){
+   projectedTag.set(tag.x,tag.y,tag.z).project(camera);
+   const visible=projectedTag.z>=-1&&projectedTag.z<=1&&Math.abs(projectedTag.x)<1.15&&Math.abs(projectedTag.y)<1.15;
+   tag.el.hidden=!visible||(tag.isRoom&&!roomLabelsEnabled);
+   if(visible){
+     const x=(projectedTag.x*.5+.5)*width,y=(-projectedTag.y*.5+.5)*height;
+     tag.el.style.left=x.toFixed(1)+'px';tag.el.style.top=y.toFixed(1)+'px';
+   }
+ }
+}
+el('toggleLabels').onclick=()=>{
+ labelsEnabled=!labelsEnabled;
+ const button=el('toggleLabels');button.textContent=labelsEnabled?'🏷 Label Jelas: ON':'🏷 Label Jelas: OFF';
+ button.setAttribute('aria-pressed',String(labelsEnabled));button.classList.toggle('is-off',!labelsEnabled);
+ updateWorldLabels();
+};
+el('toggleRoomLabels').onclick=()=>{
+ roomLabelsEnabled=!roomLabelsEnabled;
+ try{localStorage.setItem('vo_show_room_labels',String(roomLabelsEnabled))}catch{}
+ refreshRoomLabelButton();
+ updateWorldLabels();
+};
+el('toggleSignals').onclick=()=>{
+ apSignalsEnabled=!apSignalsEnabled;
+ try{localStorage.setItem('vo_show_ap_signals',String(apSignalsEnabled))}catch{}
+ refreshSignalButton();
+};
+refreshRoomLabelButton();
+refreshSignalButton();
+function addConnectivityDecor(){
+ const aps=data.objects.filter(o=>o.type==='ap');
+ const users=data.objects.filter(o=>o.type==='user'&&effectiveStatus(o)==='online');
+ if(!aps.length)return;
+ const apDecor=new Map();
+ for(const ap of aps){
+   const apP=pos3d(ap);const ax=apP.x,az=apP.z;
+   const baseRing=new THREE.Mesh(new THREE.RingGeometry(.20,.25,32),new THREE.MeshBasicMaterial({color:0x7cc7ff,transparent:true,opacity:.86,side:THREE.DoubleSide}));
+   baseRing.rotation.x=-Math.PI/2;baseRing.position.set(ax,.03,az);roomGroup.add(baseRing);roomDecor.push(baseRing);
+   const pole=softBox(.05,1.85,.05,0xbccad8,ax,.92,az);roomDecor.push(pole);
+   const hub=new THREE.Mesh(new THREE.SphereGeometry(.11,18,14),new THREE.MeshStandardMaterial({color:0xeaf6ff, emissive:0x5bbcff, emissiveIntensity:.7}));
+   hub.position.set(ax,1.95,az);roomGroup.add(hub);roomDecor.push(hub);
+   apDecor.set(ap.id,{kind:'hub',group:hub,ring:baseRing,arcs:[],glowArcs:[],packets:[],ap,elapsed:0,phase:0});
+ }
+ if(users.length){
+   const onlineAps=aps.filter(ap=>effectiveStatus(ap)==='online');
+   const candidates=onlineAps.length?onlineAps:aps;
+   for(const u of users){
+     const up=pos3d(u);const ux=up.x,uz=up.z;
+     let nearest=null,best=Infinity;
+     for(const ap of candidates){
+       const apP=pos3d(ap);
+       const dist=Math.hypot(ux-apP.x,uz-apP.z);
+       if(dist<best){best=dist;nearest=ap;}
+     }
+     if(!nearest)continue;
+     const apP=pos3d(nearest);const ax=apP.x,az=apP.z;
+     const mid=new THREE.Vector3((ax+ux)/2, .42 + Math.hypot(ux-ax,uz-az)*.028, (az+uz)/2);
+     const curve=new THREE.QuadraticBezierCurve3(new THREE.Vector3(ax,1.9,az), mid, new THREE.Vector3(ux,.28,uz));
+     const geometry=new THREE.TubeGeometry(curve,26,.022,6,false);
+     const glowGeometry=new THREE.TubeGeometry(curve,26,.050,6,false);
+     const core=new THREE.Mesh(geometry,new THREE.MeshBasicMaterial({color:0x1ac8ff,transparent:true,opacity:.72,depthWrite:false}));
+     const glow=new THREE.Mesh(glowGeometry,new THREE.MeshBasicMaterial({color:0x59d5ff,transparent:true,opacity:.10,depthWrite:false}));
+     glow.renderOrder=2;core.renderOrder=3;
+     roomGroup.add(glow,core);roomDecor.push(glow,core);
+     const dots=[];
+     for(let k=0;k<2;k++){
+       const dot=new THREE.Mesh(new THREE.SphereGeometry(.055,10,10),new THREE.MeshStandardMaterial({color:k?0x58cfa5:0x7cc7ff, emissive:k?0x2ea57d:0x4da6ff, emissiveIntensity:.9, transparent:true, opacity:.94}));
+       roomGroup.add(dot); roomDecor.push(dot); dots.push(dot);
+     }
+     const decor=apDecor.get(nearest.id);
+     decor.arcs.push(core);
+     decor.glowArcs.push(glow);
+     decor.packets.push({curve,dots,offset:Math.random(),user:u});
+   }
+ }
+ for(const decor of apDecor.values())animatedDevices.push(decor);
+}
+function profileSprite(o,parent){
+ // High-contrast status card so workstation labels remain readable against bright floors.
+ const c=document.createElement('canvas');c.width=512;c.height=208;
+ const ct=c.getContext('2d');
+ const status=effectiveStatus(o);
+ const dot=status==='online'?'#45E3A0':status==='offline'?'#FF7487':status==='unknown'?'#FFCE6B':'#89BFFF';
+ const chip=status==='online'?'ONLINE':status==='offline'?'OFFLINE':status==='unknown'?'UNKNOWN':'UNKNOWN';
+ ct.clearRect(0,0,c.width,c.height);
+ ct.shadowColor='rgba(14,31,59,.48)';ct.shadowBlur=22;ct.shadowOffsetY=11;
+ ct.fillStyle='#172C48';ct.beginPath();ct.roundRect(16,14,480,170,24);ct.fill();
+ ct.shadowColor='transparent';ct.shadowBlur=0;ct.shadowOffsetY=0;
+ ct.strokeStyle='#76D2F7';ct.lineWidth=3;ct.beginPath();ct.roundRect(18,16,476,166,22);ct.stroke();
+ // A saturated accent line and a colored live-status indicator.
+ ct.fillStyle=dot;ct.beginPath();ct.roundRect(32,34,7,130,4);ct.fill();
+ ct.beginPath();ct.arc(67,67,10,0,Math.PI*2);ct.fill();
+ ct.font='bold 34px Arial, sans-serif';ct.fillStyle='#FFFFFF';
+ const name=String(o.name||o.id);const display=name.length>19?name.slice(0,18)+'…':name;
+ ct.fillText(display,90,79,368);
+ ct.font='bold 22px Arial, sans-serif';ct.fillStyle=dot;ct.fillText(chip,54,135);
+ ct.font='20px Arial, sans-serif';ct.fillStyle='#C5DBF4';
+ // Status only: hostname is reserved for KSC mapping in the Detail Objek editor.
+ const texture=new THREE.CanvasTexture(c);texture.colorSpace=THREE.SRGBColorSpace;
+ texture.anisotropy=Math.min(8,renderer?.capabilities?.getMaxAnisotropy?.()||1);
+ const material=new THREE.SpriteMaterial({map:texture,transparent:true,depthTest:false,depthWrite:false,opacity:1,toneMapped:false});
+ const sprite=new THREE.Sprite(material);
+ sprite.scale.set(3.0,1.22,1);sprite.position.set(0,3.05,.28);
+ sprite.renderOrder=1000;sprite.userData.pickId=o.id;parent.add(sprite);meshes.push(sprite);
+ return sprite;
+}
+// v36: reliable model loading and true replacement of procedural desktop furniture.
+const laptopGLBPath='assets/models/laptop-poly-google.glb?v=43';
+let laptopGLB=null, laptopGLBLoading='loading';
+const laptopGLBLoader=new GLTFLoader();
+function setLaptopGLBStatus(message){const e=el('laptopGlbStatus');if(e)e.textContent=message;}
+function getImportedLaptopTuning(){return {rotationY:Math.PI,offsetX:0,offsetY:0.004,offsetZ:0,scale:1};}
+function cloneLaptopGLB(){
+ const raw=laptopGLB.clone(true);
+ raw.traverse(node=>{if(!node.isMesh)return;
+   node.geometry=node.geometry.clone();
+   node.material=Array.isArray(node.material)?node.material.map(m=>m.clone()):node.material.clone();
+   node.frustumCulled=false;
+ });
+ raw.updateMatrixWorld(true);
+ const bounds=new THREE.Box3().setFromObject(raw);
+ if(bounds.isEmpty())throw Error('Model laptop GLB kosong');
+ const size=bounds.getSize(new THREE.Vector3());
+ const center=bounds.getCenter(new THREE.Vector3());
+ if(Math.min(size.x,size.y,size.z)<.001)throw Error('Ukuran laptop GLB tidak valid');
+ // Critical: move the raw asset's huge world-space center inside a separate pivot.
+ // Rotating the pivot must not rotate an unbalanced translation of the raw model.
+ const scale=Math.min(.56/size.x,.45/size.z,.40/size.y);
+ raw.scale.setScalar(scale);
+ raw.position.set(-center.x*scale,-bounds.min.y*scale,-center.z*scale);
+ const pivot=new THREE.Group();pivot.name='CenteredPolyLaptopPivot';
+ pivot.add(raw);
+ pivot.position.y=.025;
+ pivot.userData.sourceBounds=size.toArray();
+ return pivot;
+}
+function installImportedLaptop(entry){
+ if(!laptopGLB||!entry||entry.device!=='laptop'||!entry.applied||!entry.laptopObject||entry.importedLaptop)return;
+ const body=entry.laptopObject;
+ let imported;
+ try{
+   imported=cloneLaptopGLB();
+   imported.rotation.y=THREE.MathUtils.degToRad(Number(entry.obj.laptopYaw)||0);
+   body.add(imported);
+   for(const part of [...body.children])if(part!==imported)part.visible=false;
+   imported.traverse(n=>{if(n.isMesh){n.userData.pickId=entry.id;meshes.push(n);}});
+   entry.importedLaptop=imported;
+   entry.laptopScreen=null;
+   applyLaptopPlacementToLiveScene(entry.obj);
+ }catch(e){
+   if(imported)body.remove(imported);
+   for(const part of body.children)part.visible=true;
+   console.error('[Virtual Office] Laptop GLB gagal diterapkan; gunakan fallback',e);
+   setLaptopGLBStatus('Laptop GLB: gagal diterapkan');
+ }
+}
+const modelGLBPath='assets/models/kenney-office-workstation.glb?v=1';
+const originalDeskGLBPath='assets/models/desk-dook-pc.glb';
+const deskModelChoices=['original','procedural'];
+const deskModelTitles={kenney:'Kenney Furniture',original:'Meja Original',procedural:'Model Standar'};
+let selectedDeskStyle='original';
+const loadedDeskModels={kenney:null,original:null};
+let deskGLB=null,deskGLBError=null,useDeskGLB=true;
+let deskGLBStatus='loading';
+const modelGLBConsumers=new Set();
+const deskGLBLoader=new GLTFLoader();
+// User-selectable animated full workstation sets. Loading is lazy and shared per model type.
+const workerSetFiles={worker1:'office_worker_1_animated.glb',worker2:'office_worker_2_animated.glb',worker5:'office_worker_5_animated.glb',worker6:'office_worker_6_animated.glb'};
+const workerSetCache=new Map();
+let workerSetInstances=[];
+function loadWorkerSet(kind){
+ if(!workerSetFiles[kind])return Promise.reject(new Error('Invalid model selection'));
+ if(!workerSetCache.has(kind)){
+   workerSetCache.set(kind,new Promise((resolve,reject)=>{
+     deskGLBLoader.load('assets/models/'+workerSetFiles[kind],resolve,undefined,reject);
+   }).catch(error=>{workerSetCache.delete(kind);throw error;}));
+ }
+ return workerSetCache.get(kind);
+}
+function spawnWorkerSet(entry){
+ const kind=entry.obj.avatarStyle;
+ if(!workerSetFiles[kind])return;
+ const currentParent=entry.parent;
+ const activeRoom=roomGroup;
+ loadWorkerSet(kind).then(gltf=>{
+   if(entry.parent!==currentParent||!entry.parent.parent||roomGroup!==activeRoom||entry.obj.avatarStyle!==kind)return;
+   const model=cloneSkinnedModel(gltf.scene);
+   // Exclude the GLB's large reference floor BEFORE measuring bounds.
+   // Box3.setFromObject() includes invisible objects, so merely setting
+   // Floor.visible=false caused Worker 1 to appear miniature.
+   const embeddedFloors=[];
+   model.traverse(node=>{if(/^Floor(?:_|$)/i.test(String(node.name||'')))embeddedFloors.push(node)});
+   for(const node of embeddedFloors){node.parent?.remove(node)}
+   model.updateMatrixWorld(true);
+   const bounds=new THREE.Box3().setFromObject(model);
+   if(bounds.isEmpty())throw new Error('Model workstation GLB tidak mempunyai geometri');
+   const size=bounds.getSize(new THREE.Vector3());
+   if(!Number.isFinite(size.x)||!Number.isFinite(size.y)||!Number.isFinite(size.z)||Math.max(size.x,size.y,size.z)<.01)throw new Error('Dimensi GLB tidak valid');
+   // Bring imported desk/chair/avatar close to the proportions of the
+   // original Virtual Office workstation, including head clearance.
+   const factor=Math.min(1.98/Math.max(size.x,.01),1.82/Math.max(size.z,.01),2.16/Math.max(size.y,.01));
+   const normalized=new THREE.Group();
+   model.scale.setScalar(factor);
+   // Standardize model center on the workstation footprint and feet at y=0.
+   model.position.set(-bounds.getCenter(new THREE.Vector3()).x*factor,-bounds.min.y*factor,-bounds.getCenter(new THREE.Vector3()).z*factor);
+   normalized.add(model);
+   normalized.scale.setScalar(safeWorkerScale(entry.obj.workerScale));
+   entry.parent.add(normalized);
+   // Suppress both procedural and original GLB desk to avoid stacked furniture.
+   for(const part of entry.parts)part.visible=false;
+   if(entry.model)entry.model.visible=false;
+   entry.avatar.visible=false;
+   if(entry.shadow)entry.shadow.visible=false;
+   // Imported Office Worker sets are complete. Do not overlay procedural
+   // monitors/keyboards on top of the selected GLB workstation.
+   model.traverse(child=>{if(child.isMesh){child.userData.pickId=entry.id;child.userData.workerSetImported=true;meshes.push(child);}});
+   const people=[];
+   model.traverse(child=>{if(child.isSkinnedMesh)people.push(child);});
+   const mixer=new THREE.AnimationMixer(model);
+   const preferred=gltf.animations.find(c=>/typ/i.test(c.name))||gltf.animations.find(c=>!/pose/i.test(c.name))||gltf.animations[0];
+   if(preferred){const action=mixer.clipAction(preferred);action.play();}
+   const instance={entry,model,normalized,mixer,people,clip:preferred};
+   workerSetInstances.push(instance);
+   // Remove old click targets from the current scene: old GLB/parts may be invisible.
+   for(let i=meshes.length-1;i>=0;i--)if(!meshes[i].visible&&meshes[i].userData.pickId===entry.id)meshes.splice(i,1);
+ }).catch(error=>console.error('[Virtual Office] Worker set '+kind+' load failed:',error));
+}
+
+function setGLBStatus(state,message){
+ deskGLBStatus=state;
+ const elStatus=el('glbStatus');
+ if(elStatus)elStatus.textContent=message;
+}
+function normalizeDeskMesh(model){
+ model.updateMatrixWorld(true);
+ const bounds=new THREE.Box3().setFromObject(model);
+ if(bounds.isEmpty())throw Error('GLB tidak berisi geometri yang dapat ditampilkan');
+ const size=bounds.getSize(new THREE.Vector3());
+ const center=bounds.getCenter(new THREE.Vector3());
+ if(!Number.isFinite(size.x)||!Number.isFinite(size.y)||!Number.isFinite(size.z)||size.x<.001||size.y<.001||size.z<.001)throw Error('Ukuran GLB tidak valid');
+ // In the original file, Y is up and the desk/chair are positioned in one unit.
+ const factor=Math.min(1.85/size.x,1.58/size.z,1.65/size.y);
+ model.scale.setScalar(factor);
+ model.position.set(-center.x*factor,-bounds.min.y*factor,-center.z*factor);
+ model.updateMatrixWorld(true);
+ return model;
+}
+function makeDeskGLBClone(){
+ const instance=deskGLB.clone(true);
+ instance.traverse(n=>{
+   if(!n.isMesh)return;
+   // Avoid shared GPU objects being disposed on floor/editor rebuild.
+   n.geometry=n.geometry.clone();
+   n.material=Array.isArray(n.material)?n.material.map(m=>m.clone()):n.material.clone();
+   n.castShadow=false;n.receiveShadow=true;n.frustumCulled=false;
+   n.visible=true;
+ });
+ return normalizeDeskMesh(instance);
+}
+// v37: derive the sitter's placement from the imported chair and keyboard meshes.
+// Positions are calculated in the station coordinate system and remain valid after rotating the workstation.
+function getGLBAvatarPose(model,station){
+ // Desk by dook: Chair = lower structure, Chair_1 = actual seat,
+ // Chair_2 = high backrest. Derive pose from the seat, never from the union.
+ station.updateWorldMatrix(true,true);
+ model.updateWorldMatrix(true,true);
+ const seatBounds=new THREE.Box3(),chairBounds=new THREE.Box3(),keyboardBounds=new THREE.Box3();
+ let foundSeat=false,foundChair=false,foundKeyboard=false;
+ model.traverse(node=>{
+   if(!node.isMesh)return;
+   const name=String(node.name||'');
+   const bounds=new THREE.Box3().setFromObject(node);
+   if(/^Chair(?:[_.-]|$)/i.test(name)){
+     chairBounds.union(bounds);foundChair=true;
+     if(/^Chair[_-]1(?:[_.-]|$)/i.test(name)){seatBounds.union(bounds);foundSeat=true;}
+   }
+   if(/^Keyboard(?:[_.-]|$)/i.test(name)){keyboardBounds.union(bounds);foundKeyboard=true;}
+ });
+ if(!foundChair||!foundKeyboard||chairBounds.isEmpty()||keyboardBounds.isEmpty()){
+   console.warn('[Virtual Office] Chair/keyboard geometry unavailable; fallback avatar pose');
+   return {x:-.32,y:0,z:.25,rotation:-Math.PI/2,scale:.65};
+ }
+ // On this model Chair_1 has the actual cushion; Chair_2 is the backrest.
+ const cushion=foundSeat&&!seatBounds.isEmpty()?seatBounds:chairBounds;
+ const cushionWorld=cushion.getCenter(new THREE.Vector3());
+ const chairLocal=station.worldToLocal(cushionWorld.clone());
+ const kbLocal=station.worldToLocal(keyboardBounds.getCenter(new THREE.Vector3()));
+ const cushionTopLocal=station.worldToLocal(new THREE.Vector3(cushionWorld.x,cushion.max.y,cushionWorld.z)).y;
+ const direction=new THREE.Vector3(kbLocal.x-chairLocal.x,0,kbLocal.z-chairLocal.z);
+ const dist=direction.length();
+ if(dist>0.00001)direction.multiplyScalar(1/dist);else direction.set(1,0,0);
+ // Root avatar hips are at local y=.69. Place the sitter slightly higher
+ // and a bit closer to the desk so the seated pose does not look too low.
+ const scale=.69;
+ const rootY=cushionTopLocal-.69*scale+.125;
+ const shift=Math.min(.21,Math.max(.09,dist*.18));
+ return {
+   x:chairLocal.x+direction.x*shift,
+   y:rootY,
+   z:chairLocal.z+direction.z*shift,
+   rotation:Math.atan2(-direction.x,-direction.z),
+   scale
+ };
+}
+// v38: preserve the imported desk and chair, replacing only desktop hardware.
+const desktopHardwarePattern=/^(?:Computer Screen|Keyboard(?:_|-|$)|Computer mouse|Mousepad|System_unit)/i;
+const laptopDeskKeepPattern=/^(?:Desk(?:-|_|$)|Chair(?:_|$)|Light Desk|Office Phone|Cube\.002|Laptop bag|Cylinder)/i;
+function configureImportedDeskForDevice(model,device){
+ model.traverse(child=>{
+   if(!child.isMesh)return;
+   const name=String(child.name||'');
+   if(device==='laptop'){
+     // Laptop mode keeps only the furniture and desk accessories, removing desktop hardware completely.
+     child.visible=laptopDeskKeepPattern.test(name);
+   } else {
+     child.visible=true;
+   }
+ });
+}
+function makeLaptopForImportedDesk(model,station,status){
+ model.updateMatrixWorld(true);
+ station.updateMatrixWorld(true);
+ const deskBox=new THREE.Box3(),keyboardBox=new THREE.Box3(),chairBox=new THREE.Box3();
+ let foundDesk=false, foundKeyboard=false, foundChair=false;
+ model.traverse(child=>{
+   if(!child.isMesh)return;
+   const name=String(child.name||'');
+   const b=new THREE.Box3().setFromObject(child);
+   if(/^Desk(?:-|_|$)/i.test(name)){deskBox.union(b);foundDesk=true;}
+   if(/^Keyboard(?:[_.-]|$)/i.test(name)){keyboardBox.union(b);foundKeyboard=true;}
+   if(/^Chair(?:[_.-]|$)/i.test(name)){chairBox.union(b);foundChair=true;}
+ });
+ if(!foundDesk||!foundKeyboard||!foundChair)throw Error('Meja GLB tidak memiliki mesh Desk/Keyboard/Chair terpisah');
+ const centerK=station.worldToLocal(keyboardBox.getCenter(new THREE.Vector3()));
+ const centerC=station.worldToLocal(chairBox.getCenter(new THREE.Vector3()));
+ const centerD=station.worldToLocal(deskBox.getCenter(new THREE.Vector3()));
+ const topDesk=station.worldToLocal(new THREE.Vector3(0,deskBox.max.y,0)).y;
+ const direction=new THREE.Vector3(centerK.x-centerC.x,0,centerK.z-centerC.z);
+ const yaw=Math.atan2(-direction.x,-direction.z);
+ // Hide desktop-only components and preserve only desk furniture for laptop mode.
+ let removed=0;
+ model.traverse(child=>{
+   if(child.isMesh&&desktopHardwarePattern.test(String(child.name||''))){removed++;}
+ });
+ configureImportedDeskForDevice(model,'laptop');
+ if(removed<3)console.warn('[Virtual Office] Desktop hardware markers are limited; applying whitelist hide for laptop mode');
+ const body=new THREE.Group();
+ body.name='VirtualOfficeLaptop';
+ // Center on the desk top with a small shift toward the chair (not the old keyboard point).
+ body.position.set(centerD.x*.86 + centerC.x*.14,topDesk+.018,centerD.z*.86 + centerC.z*.14);
+ const baseX=body.position.x,baseZ=body.position.z;
+
+ body.rotation.y=yaw+Math.PI;
+ station.add(body);
+ const base=softBox(.63,.055,.41,0x596579,0,.025,0,body);
+ softBox(.59,.012,.365,0xb7c3d1,0,.060,0,body);
+ const keys=softBox(.50,.008,.20,0x465365,0,.071,-.076,body);
+ for(let row=0;row<3;row++)for(let col=0;col<9;col++){
+   softBox(.037,.005,.035,0xdce6ed,-.192+col*.048,.079,-.148+row*.048,body);
+ }
+ softBox(.16,.006,.068,0xd9e1e8,0,.073,.115,body);
+ // Hinged open lid, facing the employee at the imported chair.
+ const lid=new THREE.Group();lid.position.set(0,.073,-.189);lid.rotation.x=-.18;body.add(lid);
+ softBox(.64,.41,.027,0x33445b,0,.20,0,lid);
+ const display=softBox(.58,.34,.014,0x9de3ff,0,.205,.022,lid);
+ display.material.emissive=new THREE.Color(0x53b7db);
+ display.material.emissiveIntensity=status==='online'?.7:.12;
+ softBox(.075,.015,.016,0x7cccec,0,.386,.035,lid);
+ body.traverse(c=>{if(c.isMesh){c.userData.pickId=station.parent.userData.id;meshes.push(c)}});
+ return {body,display,removed,baseX,baseZ};
+}
+function updateEntryAvatarPose(entry){
+ const avatar=entry.avatar, shadow=entry.shadow;
+ if(!avatar)return;
+ const pose=(useDeskGLB&&entry.model?.visible&&(entry.device==='pc'||entry.device==='laptop'))?entry.glbPose:null;
+ entry.activePose=pose;
+ if(pose){
+   avatar.scale.setScalar(pose.scale);
+   avatar.position.set(pose.x,pose.y,pose.z);
+   avatar.rotation.set(0,pose.rotation,0);
+   if(shadow){shadow.position.set(pose.x,.027,pose.z);shadow.visible=false}
+ }else{
+   avatar.scale.setScalar(1);
+   avatar.position.set(0,0,.80);
+   avatar.rotation.set(0,THREE.MathUtils.degToRad(Number(entry.obj.facing)||0),0);
+   if(shadow){shadow.position.set(0,.027,.80);shadow.visible=true}
+ }
+}
+function applyDeskGLB(entry){
+ if(workerSetFiles[entry.obj.avatarStyle])return;
+ if(!entry?.parent?.parent||!useDeskGLB||(entry.device!=='pc'&&entry.device!=='laptop')||entry.applied||!deskGLB)return;
+ try{
+   const model=makeDeskGLBClone();
+   entry.parent.add(model);
+   // Kenney and the original GLB are both valid for the PC/Laptop workstation.
+   configureImportedDeskForDevice(model,'pc');
+   entry.glbPose=getGLBAvatarPose(model,entry.parent);
+   // Hide every procedural workstation mesh, excluding the actual avatar.
+   for(const part of entry.parts)part.visible=false;
+   model.traverse(child=>{if(child.isMesh){child.userData.pickId=entry.id;meshes.push(child);}});
+   entry.applied=true;entry.model=model;
+   updateEntryAvatarPose(entry);
+ }catch(e){
+   deskGLBError=e;
+   setGLBStatus('error','GLB gagal: '+e.message);
+   console.error('[Virtual Office] Failed to apply desk GLB',e);
+ }
+}
+function updateDeskGLBDisplay(){
+ for(const entry of modelGLBConsumers){
+   if(!entry.parent.parent)continue;
+   if(workerSetFiles[entry.obj.avatarStyle])continue;
+   if(!useDeskGLB || (entry.device!=='pc'&&entry.device!=='laptop')){
+     if(entry.model)entry.model.visible=false;
+     if(entry.laptopObject)entry.laptopObject.visible=false;
+     for(const part of entry.parts)part.visible=true;
+     updateEntryAvatarPose(entry);
+   }else{
+     if(entry.model){entry.model.visible=true;if(entry.laptopObject)entry.laptopObject.visible=true;for(const part of entry.parts)part.visible=false;updateEntryAvatarPose(entry);}
+     else applyDeskGLB(entry);
+   }
+ }
+ const count=[...modelGLBConsumers].filter(e=>e.applied).length;
+ const laptops=[...modelGLBConsumers].filter(e=>e.applied&&e.device==='laptop').length;
+ const imported=[...modelGLBConsumers].filter(e=>e.importedLaptop&&e.applied).length;
+ // v44: same PC model for Laptop and PC.
+ if(deskGLBStatus==='loaded')setGLBStatus('loaded',`GLB siap · ${count} meja (model PC untuk PC/Laptop)`);
+}
+function prepareDeskGLB(gltf,kind){
+ loadedDeskModels[kind]=gltf.scene;
+ if(selectedDeskStyle===kind){
+   deskGLB=gltf.scene;deskGLBError=null;
+   setGLBStatus('loaded','Model '+deskModelTitles[kind]+' siap');
+   updateDeskGLBDisplay();
+ }
+}
+function selectDeskStyle(style){
+ if(!deskModelChoices.includes(style))style='original';
+ selectedDeskStyle=style;useDeskGLB=style!=='procedural';
+ deskGLB=loadedDeskModels[style]||null;
+ const btn=el('deskModelToggle');if(btn)btn.textContent='🪑 Model: '+deskModelTitles[style];
+ for(const entry of modelGLBConsumers){
+   if(entry.model){
+     entry.parent.remove(entry.model);
+     const deleted=new Set();entry.model.traverse(child=>{if(child.isMesh)deleted.add(child)});
+     for(let i=meshes.length-1;i>=0;i--)if(deleted.has(meshes[i]))meshes.splice(i,1);
+   }
+   entry.applied=false;entry.model=null;entry.glbPose=null;
+ }
+ updateDeskGLBDisplay();
+}
+function createDeskModelEntry(o,station,avatar,shadow){
+ const entry={obj:o,parent:station,avatar,shadow,parts:station.children.filter(p=>p!==avatar),device:String(o.device||'PC').trim().toLowerCase(),id:o.id,applied:false,model:null,glbPose:null,activePose:null,laptopObject:null,laptopScreen:null};
+ modelGLBConsumers.add(entry);
+ if(workerSetFiles[o.avatarStyle])spawnWorkerSet(entry);else applyDeskGLB(entry);
+ return entry;
+}
+setGLBStatus('loading','Original GLB: memuat model...');
+deskGLBLoader.load(originalDeskGLBPath,(gltf)=>prepareDeskGLB(gltf,'original'),undefined,(e)=>{
+ console.warn('[Virtual Office] Original GLB unavailable',e);
+ if(selectedDeskStyle==='original')selectDeskStyle('procedural');
+});
+// v44: separate laptop GLB intentionally disabled. Inventory device type is preserved.
+
+function addStation(o){
+ const depth=sceneCfg().depth;
+ const p=pos3d(o);const x=p.x,z=p.z;
+ const g=new THREE.Group();g.position.set(x,0,z);g.userData.id=o.id;roomGroup.add(g);
+ const station=new THREE.Group();station.rotation.y=THREE.MathUtils.degToRad(Number(o.deskFacing ?? 90)||0);g.add(station);
+ const statusColor=effectiveStatus(o)==='offline'?0xf07b86:effectiveStatus(o)==='online'?0x58cfa5:0x9aaabc;
+ const baseRing=new THREE.Mesh(new THREE.RingGeometry(.48,.56,30),new THREE.MeshBasicMaterial({color:statusColor,transparent:true,opacity:.65,side:THREE.DoubleSide}));
+ baseRing.rotation.x=-Math.PI/2;baseRing.position.set(0,.02,.2);g.add(baseRing);
+ // Desk set
+ const deskPalette=roomColorFor(o);
+ softBox(1.16,.10,.78,0x98623e,0,.80,0,station);
+ softBox(1.18,.035,.80,0xbb8454,0,.864,0,station);
+ for(let ax of [-.47,.47])for(let az of [-.29,.29])softBox(.06,.68,.06,0x70482f,ax,.39,az,station);
+ // v32: the selected device determines the actual 3D hardware model.
+ const isLaptop=false; // v44: PC and Laptop share the same 3D desktop visuals; data.device is unchanged.
+ let screen,keyboard;
+ if(isLaptop){
+   // Laptop: thin clamshell body, integrated keyboard, trackpad and tilted screen.
+   softBox(.63,.055,.42,0x55647a,0,.915,-.065,station);
+   softBox(.58,.012,.365,0xa4b0be,0,.947,-.058,station);
+   const lid=new THREE.Group();lid.position.set(0,.958,-.263);lid.rotation.x=-.20;station.add(lid);
+   softBox(.63,.40,.035,0x394d67,0,.20,0,lid);
+   screen=softBox(.57,.34,.016,effectiveStatus(o)==='online'?0x9de3ff:0x8592a4,0,.20,.028,lid);
+   softBox(.59,.017,.018,0x6fc5ec,0,.373,.040,lid);
+   softBox(.11,.06,.018,0xe6fbff,-.14,.20,.042,lid);
+   softBox(.11,.06,.018,0x7dcdb9,.08,.20,.042,lid);
+   keyboard=softBox(.51,.014,.19,0x58687c,0,.953,-.099,station);
+   for(let row=0;row<3;row++)for(let col=0;col<9;col++){
+      softBox(.037,.005,.034,0xbcc8d1,-.194+col*.048,.965,-.168+row*.051,station);
+   }
+   softBox(.17,.007,.084,0xc6d0dc,0,.956,.091,station); // trackpad
+   sphere(.017,0xcbd9e6,0,.958,-.243,station); // lid hinge detail
+ }else{
+   // Desktop PC: full monitor on a stand, separate keyboard and a tower under desk.
+   softBox(.58,.38,.05,0x434f63,0,1.09,-.23,station);
+   screen=softBox(.49,.29,.015,effectiveStatus(o)==='online'?0x9de3ff:0x8592a4,0,1.10,-.20,station);
+   softBox(.07,.21,.07,0x748296,0,.92,-.23,station);
+   softBox(.42,.020,.013,0x57c7ed,0,1.17,-.187,station);
+   softBox(.12,.085,.013,0xe6fbff,-.13,1.065,-.187,station);
+   softBox(.12,.085,.013,0x7dcdb9,.08,1.065,-.187,station);
+   softBox(.08,.016,.018,0xffce73,.13,1.19,-.187,station);
+   keyboard=softBox(.41,.03,.19,0xfafcff,0,.86,.13,station);
+   for(let row=0;row<3;row++)for(let col=0;col<7;col++){
+      softBox(.035,.005,.022,0xa1b7c8,-.155+col*.052,.879,.055+row*.050,station);
+   }
+   softBox(.56,.035,.08,0x243b68,0,1.285,-.23,station);
+   softBox(.06,.022,.04,deskPalette.accent,.20,1.287,-.23,station);
+   // CPU tower is visible alongside desk legs.
+   softBox(.24,.51,.34,0x303c4f,.44,.28,-.12,station);
+   softBox(.17,.36,.010,0x40546a,.44,.33,.055,station);
+   sphere(.018,0x51d8a2,.44,.45,.064,station);
+   for(let i=0;i<3;i++)softBox(.09,.012,.012,0x7c93a8,.44,.19+i*.055,.065,station);
+ }
+ screen.material.emissive=new THREE.Color(effectiveStatus(o)==='online'?0x53b7db:0x1b2530);
+ screen.material.emissiveIntensity=effectiveStatus(o)==='online'?.72:.08;
+ const mouseObj=sphere(.05,0xf7fbff,-.36,.87,.12,station);
+ softBox(.18,.06,.18,0xf5f8ff,.36,.87,.13,station); // mug/mini object base
+ // v19 monitor edge trim, dual accessory items, subtle desktop shadow
+ softBox(.17,.022,.22,0xb8c8d2,-.34,.862,-.04,station);
+ softBox(.17,.024,.16,0xeabf84,.40,.86,-.15,station);
+ sphere(.05,0x90d5a4,.36,.94,.13,station);
+ // chair
+ const chairSeat=softBox(.53,.11,.50,deskPalette.chair,0,.50,.81,station);
+ const chairBack=softBox(.56,.56,.12,deskPalette.chair,0,.80,1.07,station);
+ softBox(.08,.47,.08,0xe1e8f0,0,.28,.82,station);
+ softBox(.45,.08,.08,0x95a6b9,0,.09,.82,station);
+ // Five-spoke chair pedestal with wheels.
+ for(let i=0;i<5;i++){
+   const a=i*Math.PI*2/5,xx=Math.cos(a)*.22,zz=.82+Math.sin(a)*.22;
+   const leg=softBox(.09,.035,.27,0x8f9ab1,xx*.52,.10,(zz+.82)*.50,station);
+   leg.rotation.y=a;
+   sphere(.048,0x4c617c,xx,.072,zz,station);
+ }
+ // Headphone, notebook, and a compact desktop plant vary station detail.
+ const detailSeed=(Number(o.id.replace(/\D/g,''))||0)%3;
+ if(detailSeed===0){
+   softBox(.15,.02,.19,0xf2c46f,.38,.897,-.15,station);
+   softBox(.15,.008,.13,0xffffff,.38,.911,-.15,station);
+ }else if(detailSeed===1){
+   cylinder(.073,.060,.10,0xe7a47c,.40,.93,-.11,station);
+   sphere(.085,0x70c39a,.40,1.04,-.11,station);
+ }else{
+   softBox(.13,.035,.13,0xc5d1e2,.37,.891,-.16,station);
+   sphere(.048,0x567fae,.37,.94,-.16,station);
+ }
+ // avatar
+ const avatar=new THREE.Group();avatar.position.set(0,0,.80);avatar.rotation.y=THREE.MathUtils.degToRad(Number(o.facing)||0);station.add(avatar);
+ // feet and tiny floor shadow add readable chibi silhouette
+ const walkingShadow=new THREE.Mesh(new THREE.CircleGeometry(.23,20),new THREE.MeshBasicMaterial({color:0x2a4865,transparent:true,opacity:.10,depthWrite:false}));
+ walkingShadow.rotation.x=-Math.PI/2;walkingShadow.position.set(0,.027,.80);station.add(walkingShadow);
+ const swatches=[0x4b90e6,0xb381e9,0xf18b7f,0x4dc7a5,0xf1b35c,0x53afd9];const number=Number(o.id.replace(/\D/g,''))||0;const shirt=swatches[number%swatches.length];
+ const torso=sphere(.25,shirt,0,.93,0,avatar);torso.scale.set(.98,1.14,.82);
+ const hip=softBox(.33,.13,.30,0x5a677d,0,.69,.08,avatar);
+ for(const side of [-1,1]){softBox(.16,.13,.32,0x58697f,side*.12,.56,-.14,avatar);softBox(.14,.28,.13,0x58697f,side*.12,.42,-.30,avatar);sphere(.10,0x48536a,side*.12,.27,-.35,avatar)}
+ const headPivot=new THREE.Group();headPivot.position.set(0,1.28,0);avatar.add(headPivot);
+ const head=sphere(.28,0xf5cda9,0,0,0,headPivot);head.scale.set(1,.95,.92);
+ const hair=sphere(.285,[0x604a43,0x343954,0x9b6347,0x464b61][number%4],0,.14,.04,headPivot);hair.scale.set(1.04,.55,.98);
+ const eyeL=sphere(.024,0x28334d,-.097,.03,-.23,headPivot);const eyeR=sphere(.024,0x28334d,.097,.03,-.23,headPivot);
+ sphere(.018,0xe6a58f,-.17,-.06,-.16,headPivot);sphere(.018,0xe6a58f,.17,-.06,-.16,headPivot);
+ // Articulated typing rig: shoulder -> elbow -> wrist -> individually moving fingertips.
+  // The rig is constructed inside the avatar, without altering the V3 chair anchor.
+  const arms=[],typingHands=[];
+  for(const side of [-1,1]){
+    const shoulder=new THREE.Group();shoulder.position.set(side*.22,1.04,-.045);avatar.add(shoulder);
+    // Upper arms lean toward the desk; forearms rest in front of the torso.
+    const sleeve=sphere(.115,shirt,side*.02,-.085,-.085,shoulder);
+    sleeve.scale.set(.78,1.02,1.22);
+    const elbow=new THREE.Group();elbow.position.set(side*.052,-.155,-.19);shoulder.add(elbow);
+    sphere(.075,shirt,0,0,0,elbow);
+    const forearm=sphere(.082,0xf5cda9,-side*.034,.025,-.116,elbow);
+    forearm.scale.set(.78,.74,1.75);
+    const wrist=new THREE.Group();wrist.position.set(-side*.068,.065,-.244);elbow.add(wrist);
+    const palm=sphere(.086,0xf5cda9,0,0,0,wrist);palm.scale.set(.95,.45,1.18);
+    const fingers=[];
+    for(let n=0;n<3;n++){
+      const finger=new THREE.Group();finger.position.set((n-1)*.043,-.008,-.068);wrist.add(finger);
+      const tip=sphere(.025,0xf5cda9,0,-.004,-.028,finger);tip.scale.set(.8,.7,1.65);
+      fingers.push(finger);
+    }
+    arms.push(shoulder);
+    typingHands.push({side,shoulder,elbow,wrist,fingers});
+  }
+ // over-head pin marker
+ const pin=new THREE.Group();pin.position.set(0,2.13,.25);g.add(pin);
+ const pinCircle=sphere(.11,statusColor,0,0,0,pin);pinCircle.material.emissive=new THREE.Color(statusColor);pinCircle.material.emissiveIntensity=.35;
+ const pinTip=new THREE.Mesh(new THREE.ConeGeometry(.055,.16,16),new THREE.MeshStandardMaterial({color:statusColor}));pinTip.position.set(0,-.13,0);pin.add(pinTip);
+ const pinHalo=new THREE.Mesh(new THREE.RingGeometry(.14,.18,24),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:.9,side:THREE.DoubleSide}));pinHalo.rotation.x=-Math.PI/2;pinHalo.position.y=.02;pin.add(pinHalo);
+ const tag=null; // v34 uses high-contrast HTML labels instead of low-resolution 3D sprites.
+ const animatedAvatar={o,avatar,station,headPivot,arms,typingHands,torso,hip,eyes:[eyeL,eyeR],screen,keyboard,mouseObj,chairSeat,chairBack,tag,baseRing,pin,pinCircle,pinHalo,walkingShadow,phase:number*.42,elapsed:0};
+ animatedAvatars.push(animatedAvatar);
+ animatedAvatar.glbEntry=createDeskModelEntry(o,station,avatar,walkingShadow);
+ g.traverse(child=>{if(child.isMesh){child.userData.pickId=o.id;meshes.push(child)}});
+} 
+function animateAvatars(delta){
+ // Play imported GLB animations only for devices confirmed online.
+ for(const instance of workerSetInstances){
+   if(instance.entry.parent.parent===null)continue;
+   const online=effectiveStatus(instance.entry.obj)==='online';
+   instance.people.forEach(node=>{node.visible=online;});
+   instance.entry.avatar.visible=false;
+   if(online&&!globalPaused&&instance.entry.obj.animation!=='paused'){
+     instance.mixer.update(delta*Math.max(.25,Math.min(2,Number(instance.entry.obj.animationSpeed)||1)));
+   }
+ }
+ for(const a of animatedAvatars){
+  if(workerSetFiles[a.o.avatarStyle]){a.avatar.visible=false;continue;}
+  const currentStatus=effectiveStatus(a.o);
+  a.avatar.visible=currentStatus==='online';
+  if(globalPaused)continue;
+  const cfgMode=a.o.animation||'working';
+  const speed=Math.max(.25,Math.min(2,Number(a.o.animationSpeed)||1));
+  if(cfgMode==='paused')continue;
+  a.elapsed+=delta*speed;
+  const t=a.elapsed+a.phase;
+  const state=effectiveStatus(a.o);
+  // v19: never show a worker 'working' when KSC says offline/unknown.
+  const online=state==='online';
+  a.avatar.visible=online;
+  a.walkingShadow.visible=online&&!a.glbEntry?.activePose;
+  const screenOn=online;
+  if(a.glbEntry?.laptopScreen){
+    const scr=a.glbEntry.laptopScreen;
+    scr.material.color.setHex(screenOn?0x9de3ff:0x455266);
+    scr.material.emissive.setHex(screenOn?0x53b7db:0x000000);
+    scr.material.emissiveIntensity=screenOn?.65+Math.sin(t*2.5)*.09:0;
+  }
+  a.screen.material.color.setHex(screenOn?0x9de3ff:0x455266);
+  a.screen.material.emissive.setHex(screenOn?0x53b7db:0x000000);
+  a.screen.material.emissiveIntensity=screenOn?.65+Math.sin(t*2.5)*.09:0;
+  a.baseRing.material.opacity=.43+Math.sin(t*1.6)*.11;
+  a.pin.position.y=2.13+Math.sin(t*1.5)*.045;
+  a.pinCircle.material.emissiveIntensity=.30+Math.sin(t*2.3)*.13;
+  a.pinHalo.scale.setScalar(1+Math.sin(t*2)*.05);
+  if(a.tag)a.tag.position.y=2.3+Math.sin(t*1.4)*.035;
+  if(!online)continue;
+  const cycle=(t+a.phase*2.3)%22;
+  const walking=false;
+  const working=online;
+  const blink=(t*.43+a.phase*1.7)%5.3;
+  const blinkSize=blink>5.06?Math.max(.08,Math.abs((blink-5.06)/.24-.5)*2):1;
+  for(const eye of a.eyes)eye.scale.y=blinkSize;
+  a.torso.scale.y=1.14+Math.sin(t*1.7)*.029;
+  a.headPivot.rotation.x=(working?.08:.035)+Math.sin(t*1.2)*.022;
+  a.headPivot.rotation.y=Math.sin(t*.75)*.055;
+  if(walking){
+   // Movement is limited to the workstation's own vicinity. JSON coordinates never change.
+   const u=cfgMode==='walking'?t*.52:Math.max(0,cycle-16)*.8;
+   const eased=Math.sin(Math.min(1,(cfgMode==='walking'?1:(cycle-16)/1.1))*Math.PI/2);
+   const exit=cfgMode==='walking'?1:Math.max(0,Math.min(1,(21-cycle)/.9));
+   const radius=.30*eased*exit;
+   a.avatar.position.x=Math.sin(u)*radius;
+   a.avatar.position.z=.80+Math.max(0,Math.cos(u))*radius;
+   a.avatar.position.y=Math.abs(Math.sin(t*6.5))*.065;
+   a.avatar.rotation.y=Math.sin(u)*.36;
+   a.avatar.rotation.z=Math.sin(t*6.5)*.045;
+   a.arms[0].rotation.x=Math.sin(t*6.5)*.38;
+   a.arms[1].rotation.x=-Math.sin(t*6.5)*.38;
+   a.walkingShadow.position.x=a.avatar.position.x;
+   a.walkingShadow.position.z=a.avatar.position.z;
+   a.chairBack.rotation.x=0;
+  }else{
+   // Keep the avatar attached to its imported chair instead of resetting to the old desk position.
+   const pose=a.glbEntry?.activePose;
+   if(pose){
+     a.avatar.position.set(pose.x,pose.y+Math.sin(t*1.65)*.006,pose.z);
+     a.avatar.rotation.y=pose.rotation;
+     a.avatar.rotation.z=Math.sin(t*.8)*.009;
+   }else{
+     a.avatar.position.x=0;a.avatar.position.y=Math.sin(t*1.65)*.009;a.avatar.position.z=.80;
+     a.avatar.rotation.y=THREE.MathUtils.degToRad(Number(a.o.facing)||0);
+     a.avatar.rotation.z=Math.sin(t*.8)*.015;
+     a.walkingShadow.position.set(0,.027,.80);
+   }
+   // Alternating keyboard taps: elbows stay bent, hands hover close to the keys.
+   // All motion is relative to the avatar, preserving the calibrated GLB chair position.
+   for(let i=0;i<a.typingHands.length;i++){
+     const hand=a.typingHands[i];
+     const offset=i*Math.PI*.79;
+     const strike=Math.max(0,Math.sin(t*11.4+offset));
+     const secondStrike=Math.max(0,Math.sin(t*16.2+offset*1.4));
+     hand.shoulder.rotation.x=-.045+Math.sin(t*2.2+offset)*.012;
+     hand.shoulder.rotation.z=hand.side*.065;
+     hand.elbow.rotation.x=-.10+Math.sin(t*3.1+offset)*.025;
+     hand.elbow.rotation.y=hand.side*(.07+Math.sin(t*2.7+offset)*.025);
+     hand.wrist.position.y=.065-(strike*.019+secondStrike*.007);
+     hand.wrist.position.z=-.244+Math.sin(t*4.7+offset)*.009;
+     hand.wrist.rotation.x=-.025+strike*.09;
+     for(let f=0;f<hand.fingers.length;f++){
+       const keyPulse=Math.max(0,Math.sin(t*(13.5+f*.7)+offset+f*1.95));
+       hand.fingers[f].rotation.x=keyPulse*.30;
+       hand.fingers[f].position.y=-.008-keyPulse*.010;
+     }
+   }
+   a.chairBack.rotation.x=Math.sin(t*1.3)*.016;
+  }
+  if(String(a.o.device||'PC').toLowerCase()!=='laptop')a.keyboard.position.z=.13+(working?Math.sin(t*8)*.004:0);
+  a.mouseObj.position.z=.11+Math.sin(t*3.2)*.009;
+ }
+ animateDevices(delta);
+}
+
+function animateDevices(delta){
+ for(const d of animatedDevices){
+   d.elapsed=(d.elapsed||0)+delta;
+   const t=d.elapsed+d.phase;
+   if(d.kind==='ap'){
+     // Dynamic multicolor Wi-Fi halo. Online = rainbow signal; Offline = red;
+     // Unknown = amber. All status values come from KSC/HA effectiveStatus().
+     const status=effectiveStatus(d.obj);
+     const online=status==='online', offline=status==='offline';
+     const signalSpeed=online?.62:offline?.08:.21;
+     const hue=(t*.10+d.phase*.07)%1;
+     const ledColor=online?new THREE.Color().setHSL(hue,.94,.58):new THREE.Color(offline?0xff4d68:0xffc64f);
+     d.led.material.color.copy(ledColor);
+     d.led.material.emissive.copy(ledColor);
+     d.led.material.emissiveIntensity=online?1.65+Math.sin(t*5.4)*.35:offline?.24:.65;
+     d.pulse.visible=apSignalsEnabled;
+     d.pulse.material.color.copy(ledColor);
+     d.pulse.scale.setScalar(online?1.10+Math.sin(t*4)*.11:1.01);
+     d.pulse.material.opacity=apSignalsEnabled?(online?.15+Math.sin(t*4)*.04:offline?.04:.08):0;
+     d.waves.forEach((wave,i)=>{
+       wave.visible=apSignalsEnabled;
+       const phase=(t*signalSpeed+i/d.waves.length)%1;
+       const size=.62+phase*2.05;
+       wave.scale.set(size, size, size);
+       wave.position.y=2.68+phase*.33;
+       wave.material.color.set(online?0xffffff:offline?0xff5167:0xffc64f);
+       if(online)wave.material.color.setHSL((hue+i*.20)%1,.95,.60);
+       wave.material.opacity=apSignalsEnabled?((online?.78:offline?.14:.36)*(1-phase*.82)):0;
+     });
+     d.group.position.y=Math.sin(t*1.2)*.01;
+   } else if(d.kind==='server'){
+     d.group.position.y=Math.sin(t*.95)*.008;
+     d.leds.forEach((led,i)=>{led.material.emissiveIntensity=.32 + (Math.sin(t*5.0+i*.8)+1)*.32;});
+   } else if(d.kind==='hub'){
+     const status=effectiveStatus(d.ap);
+     const online=status==='online',offline=status==='offline';
+     const signalColor=online?0x00bfff:offline?0xff5573:0xffc247;
+     const glowColor=online?0x6a83ff:offline?0xff3550:0xffa942;
+     d.group.material.emissive.setHex(signalColor);
+     d.group.material.emissiveIntensity=online?1.0+Math.sin(t*2.8)*.23:offline?.16:.42;
+     d.ring.visible=apSignalsEnabled;
+     d.ring.material.color.setHex(signalColor);
+     d.ring.material.opacity=apSignalsEnabled?(online?.82:offline?.22:.46):0;
+     d.ring.scale.setScalar(1+Math.sin(t*1.6)*.05);
+     d.arcs.forEach((core,i)=>{
+       const packet=d.packets[i];
+       const userOnline=packet?effectiveStatus(packet.user)==='online':false;
+       const linkActive=apSignalsEnabled&&online&&userOnline;
+       core.visible=linkActive;
+       core.material.color.setHex(signalColor);
+       core.material.opacity=linkActive?(0.62+((Math.sin(t*2.7+i*.31)+1)/2)*.10):0;
+     });
+     (d.glowArcs||[]).forEach((glow,i)=>{
+       const packet=d.packets[i];
+       const userOnline=packet?effectiveStatus(packet.user)==='online':false;
+       const linkActive=apSignalsEnabled&&online&&userOnline;
+       glow.visible=linkActive;
+       glow.material.color.setHex(glowColor);
+       glow.material.opacity=linkActive?(0.08+((Math.sin(t*2.2+i*.42)+1)/2)*.06):0;
+     });
+     (d.packets||[]).forEach((packet,pi)=>{
+       const userOnline=effectiveStatus(packet.user)==='online';
+       const linkActive=apSignalsEnabled&&online&&userOnline;
+       packet.dots.forEach((dot,di)=>{
+         dot.visible=linkActive;
+         if(!linkActive){dot.material.opacity=0;return}
+         const u=(t*.28 + packet.offset + di*.35 + pi*.017)%1;
+         dot.position.copy(packet.curve.getPointAt(u));
+         dot.material.color.setHex(signalColor);
+         dot.material.emissive.setHex(signalColor);
+         dot.material.emissiveIntensity=1.15;
+         dot.scale.setScalar(.82+Math.sin((t+di)*7.5)*.10);
+         dot.material.opacity=.78+((Math.sin(t*8+pi+di)+1)/2)*.12;
+       });
+     });
+   }
+ }
+}
+
+function addNetwork(o){
+ const p=pos3d(o);const x=p.x,z=p.z;const g=new THREE.Group();g.position.set(x,0,z);g.userData.id=o.id;roomGroup.add(g);
+ if(o.type==='printer'){
+   softBox(.88,.42,.72,0xe4e8ef,0,.48,0,g);softBox(.65,.14,.53,0x687f9b,0,.72,.06,g);softBox(.62,.08,.4,0xffffff,0,.78,-.05,g);
+   const led=sphere(.045,0x47c793,.27,.70,.31,g);animatedDevices.push({kind:'printer',group:g,led,elapsed:0,phase:0});
+ }else if(o.type==='ap'){
+   // Vivid white AP body, softly glowing front indicator, and three Wi-Fi rings.
+   softBox(.84,.14,.56,0xf0f5ff,0,2.58,0,g);sphere(.12,0xffffff,0,2.49,0,g);
+   const led=sphere(.085,0x25d5ff,.26,2.49,.17,g);
+   led.material.emissive=new THREE.Color(0x25d5ff);led.material.emissiveIntensity=1.6;
+   const pulse=sphere(.13,0x25d5ff,.26,2.49,.17,g);
+   pulse.material.transparent=true;pulse.material.opacity=.2;pulse.material.depthWrite=false;
+   softBox(.06,2.49,.06,0xbecbd9,0,1.27,0,g);
+   const waves=[];
+   for(let i=0;i<3;i++){
+     const wave=new THREE.Mesh(
+       new THREE.TorusGeometry(.27,.042,8,36),
+       new THREE.MeshBasicMaterial({color:0x25d5ff,transparent:true,opacity:.5,depthWrite:false,side:THREE.DoubleSide})
+     );
+     wave.rotation.x=-Math.PI/2;
+     wave.position.set(0,2.68,0);
+     g.add(wave);waves.push(wave);
+   }
+   animatedDevices.push({kind:'ap',obj:o,group:g,led,pulse,waves,elapsed:0,phase:(Number(o.id.replace(/\D/g,''))||0)*.3});
+ }else{
+   const oldRack=new THREE.Group();g.add(oldRack);
+   softBox(.90,1.63,.77,0x9c8bb9,0,.82,0,oldRack);
+   const leds=[];
+   for(let i=0;i<5;i++){softBox(.70,.10,.04,0xeee8fa,0,.32+i*.25,.405,oldRack);const led=sphere(.034,0x62e7b2,.24,.32+i*.25,.435,oldRack);led.material.emissive=new THREE.Color(0x34b38b);led.material.emissiveIntensity=.6;leds.push(led)}
+   const state={kind:'server',group:g,leds,elapsed:0,phase:(Number(o.id.replace(/\D/g,''))||0)*.25};
+   animatedDevices.push(state);
+   const activeRoom=roomGroup;
+   loadOfficeAsset('server').then(source=>{
+     if(activeRoom!==roomGroup||!g.parent)return;
+     const imported=placeOfficeAsset(source,g,1.67,1.08,.98);
+     g.remove(oldRack);
+     oldRack.traverse(n=>{if(n.isMesh){n.geometry.dispose();n.material.dispose()}});
+     state.leds=[];
+     imported.traverse(n=>{if(n.isMesh){n.userData.pickId=o.id;meshes.push(n)}});
+   }).catch(e=>console.warn('Server GLB failed; procedural fallback remains',e));
+ }
+ g.traverse(ch=>{if(ch.isMesh){ch.userData.pickId=o.id;meshes.push(ch)}});
+}
+function buildRoom(){
+ if(!scene)return;
+ if(roomGroup){scene.remove(roomGroup);roomGroup.traverse(o=>{if(o.isMesh&&!o.userData.workerSetImported&&!o.userData.sharedOfficeAsset){o.geometry.dispose();if(o.userData.floorPatch)o.material.map?.dispose();if(Array.isArray(o.material))o.material.forEach(m=>m.dispose());else o.material.dispose()}if(o.isSprite){o.material.map?.dispose();o.material.dispose()}if(o.isLine){o.geometry.dispose();o.material.dispose()}})}
+ modelGLBConsumers.clear();workerSetInstances=[];
+ roomGroup=new THREE.Group();scene.add(roomGroup);meshes=[];animatedAvatars=[];animatedDevices=[];roomDecor=[];
+ const cfg=sceneCfg();
+ const depth=cfg.planeD;
+ const planeW=cfg.planeW;
+ addOutdoorGarden();
+ if(floor==='1'){
+  // v28 floor-1 footprint traced from the latest 1550 × 601 reference.
+  const rectFloor=(x1,y1,x2,y2)=>softBox(worldX(x2/1550*100)-worldX(x1/1550*100),.2,worldZ(y2/601*100)-worldZ(y1/601*100),0xd9b58b,(worldX(x1/1550*100)+worldX(x2/1550*100))/2,-.15,(worldZ(y1/601*100)+worldZ(y2/601*100))/2);
+  rectFloor(16,13,1499,284);
+  rectFloor(250,344,524,550);
+  rectFloor(719,283,1031,382);
+ } else {
+  // Floor-2 footprint follows the new 615×650 architectural plan.
+  const floorRect=(x1,y1,x2,y2)=>{
+    const wx1=worldX(x1/615*100),wz1=worldZ(y1/650*100);
+    const wx2=worldX(x2/615*100),wz2=worldZ(y2/650*100);
+    softBox(wx2-wx1,.20,wz2-wz1,0xd9b58b,(wx1+wx2)/2,-.15,(wz1+wz2)/2);
+  };
+  floorRect(19,14,587,521);
+  floorRect(46,521,290,618);
+  floorRect(397,521,587,618);
+ }
+ vividRoomFloors();
+ const tiles=0xffffff;
+ const withinFoot=(x,z)=>floor==='1'
+   ? ((x>=worldX(16/1550*100)&&x<=worldX(1499/1550*100)&&z>=worldZ(13/601*100)&&z<=worldZ(284/601*100))
+     ||(x>=worldX(250/1550*100)&&x<=worldX(524/1550*100)&&z>=worldZ(344/601*100)&&z<=worldZ(550/601*100))
+     ||(x>=worldX(719/1550*100)&&x<=worldX(1031/1550*100)&&z>=worldZ(283/601*100)&&z<=worldZ(382/601*100)))
+   : ((x>=worldX(19/615*100)&&x<=worldX(587/615*100)&&z>=worldZ(14/650*100)&&z<=worldZ(521/650*100))
+     ||(x>=worldX(46/615*100)&&x<=worldX(290/615*100)&&z>=worldZ(521/650*100)&&z<=worldZ(618/650*100))
+     ||(x>=worldX(397/615*100)&&x<=worldX(587/615*100)&&z>=worldZ(521/650*100)&&z<=worldZ(618/650*100)));
+ for(let i=-Math.ceil(planeW/2);i<=Math.ceil(planeW/2);i++)for(let j=-Math.ceil(depth/2);j<=Math.ceil(depth/2);j++){if(false&&withinFoot(i,j)&&((i+j)%2===0))softBox(.985,.009,.98,tiles,i,-.060,j)}
+ 
+ if(floor==='1'){
+  // Black lines from the latest floor-1 reference (1550 × 601).
+  const W=(a,b,c,d)=>{
+   const x1=worldX(a/1550*100),z1=worldZ(b/601*100),x2=worldX(c/1550*100),z2=worldZ(d/601*100);
+   const length=Math.hypot(x2-x1,z2-z1);if(length<.01)return;
+   const angle=-Math.atan2(z2-z1,x2-x1);
+   const glass=softBox(length,1.28,.13,0xf3eee7,(x1+x2)/2,.69,(z1+z2)/2);
+   glass.rotation.y=angle;glass.material.transparent=true;glass.material.opacity=.98;glass.material.depthWrite=true;
+   const rail=softBox(length,.12,.19,0x383f44,(x1+x2)/2,1.36,(z1+z2)/2);rail.rotation.y=angle;
+   const bottomRail=softBox(length,.085,.19,0x424b50,(x1+x2)/2,.10,(z1+z2)/2);bottomRail.rotation.y=angle;
+  };
+  const walls=[
+   [16,14,602,14],[641,14,797,14],[836,14,1499,14],
+   [16,14,16,284],[1499,14,1499,26],[1499,62,1499,284],
+   [250,14,250,99],[250,123,250,174],[250,198,250,284],
+   [406,14,406,284],[719,14,719,382],[1031,14,1031,382],[1187,14,1187,284],
+   [16,149,251,149],
+   [16,284,1499,284],
+   [250,344,290,344],[329,344,524,344],[250,344,250,550],[524,344,524,550],[250,550,524,550],
+   [719,382,836,382],[875,382,1031,382]
+  ];walls.forEach(v=>W(...v));
+ } else {
+  // Lantai 2 v26: rebuilt from updated layout reference (615x650), no doors.
+  const W=(x1,y1,x2,y2)=>{
+    const ax=worldX(x1/615*100),az=worldZ(y1/650*100),bx=worldX(x2/615*100),bz=worldZ(y2/650*100);
+    const length=Math.hypot(bx-ax,bz-az);if(length<.05)return;
+    const glass=softBox(length,.94,.13,0xf3eee7,(ax+bx)/2,.53,(az+bz)/2);
+    glass.rotation.y=-Math.atan2(bz-az,bx-ax);glass.material.transparent=true;glass.material.opacity=.98;glass.material.depthWrite=true;
+    const rail=softBox(length,.105,.19,0x383f44,(ax+bx)/2,1.04,(az+bz)/2);rail.rotation.y=glass.rotation.y;
+    const bottomRail=softBox(length,.085,.19,0x424b50,(ax+bx)/2,.10,(az+bz)/2);bottomRail.rotation.y=glass.rotation.y;
+  };
+  const walls=[
+   [19,14,587,14],
+   [19,14,19,251],[19,275,19,521],[586,14,586,618],
+   [316,14,316,98],
+   [19,97,47,97],[74,97,398,97],[452,97,587,97],
+   [19,300,101,300],[100,300,100,317],[100,334,100,456],
+   [19,455,128,455],[155,455,182,455],[209,455,234,455],[265,455,371,455],[398,455,587,455],
+   [182,455,182,521],[344,455,344,521],
+   [19,520,587,520],
+   [46,520,46,618],[290,520,290,618],[397,520,397,618],
+   [46,617,290,617],[397,617,587,617]
+  ];
+  walls.forEach(w=>W(...w));
+ }
+ if(false)for(let x of [-planeW/3.15,0,planeW/3.15]){softBox(2.2,1.08,.04,0xffffff,x,1.43,-depth/2+.14);softBox(1.92,.88,.05,0xb6e0ed,x,1.43,-depth/2+.18);softBox(.075,.90,.07,0xffffff,x,1.43,-depth/2+.23);softBox(2.1,.075,.14,0xffffff,x,.91,-depth/2+.26);}
+ for(let x of [-planeW/2+.85,planeW/2-.88]){softBox(.46,.49,.46,0xe4a68c,x,.25,-depth/2+1);sphere(.37,0x86be9b,x,.79,-depth/2+1);sphere(.29,0x73b28e,x,1.1,-depth/2+1);}
+ // soft central decor rings like virtual office dashboard
+ const ringOuter=new THREE.Mesh(new THREE.RingGeometry(cfg.rings[0],cfg.rings[0]+.15,80),new THREE.MeshBasicMaterial({color:0xd8e6f0,transparent:true,opacity:.4,side:THREE.DoubleSide}));ringOuter.rotation.x=-Math.PI/2;ringOuter.position.y=.015;roomGroup.add(ringOuter);
+ const ringInner=new THREE.Mesh(new THREE.RingGeometry(cfg.rings[1],cfg.rings[1]+.15,80),new THREE.MeshBasicMaterial({color:0xe9c78b,transparent:true,opacity:.32,side:THREE.DoubleSide}));ringInner.rotation.x=-Math.PI/2;ringInner.position.y=.016;roomGroup.add(ringInner);
+ roomDecor.push(ringOuter,ringInner);
+ isometricDecor();
+ enhanceOfficeAreas();
+ for(const o of data.objects){if(o.type==='user')addStation(o);else addNetwork(o)}
+ addConnectivityDecor();
+ addAreaLabels();
+ refreshWorldLabels();
+ highlight();updatePopup();
+ lastRenderedStatusSignature=visualStatusSignature();if(mode==='list')renderDeviceList();
+}
+function highlight(){if(!roomGroup)return;roomGroup.children.forEach(g=>{if(!g.userData.id)return;g.traverse(ch=>{if(ch.isMesh&&ch.material?.emissive)ch.material.emissive.setHex(g.userData.id===selected?0x254463:0x000000)})})}
+function resize(){if(!renderer)return;let rect=el('scene').getBoundingClientRect();if(!rect.width||!rect.height)return;renderer.setSize(rect.width,rect.height,false);const aspect=rect.width/rect.height;const span=sceneCfg().span;camera.left=-span*aspect;camera.right=span*aspect;camera.top=span;camera.bottom=-span;camera.updateProjectionMatrix()}
+function init(){scene=new THREE.Scene();scene.background=new THREE.Color(0xdbeeff);camera=new THREE.OrthographicCamera(-12,12,12,-12,.1,180);const c=sceneCfg().camera;camera.position.set(c[0],c[1],c[2]);renderer=new THREE.WebGLRenderer({canvas:el('view3d'),antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio,1.75));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.35;scene.add(new THREE.HemisphereLight(0xffffff,0xa9c6da,2.5));let light=new THREE.DirectionalLight(0xffffff,3.0);light.position.set(-10,18,9);scene.add(light);const fill=new THREE.DirectionalLight(0xb7dbff,.75);fill.position.set(12,11,-8);scene.add(fill);controls=new OrbitControls(camera,renderer.domElement);controls.target.set(0,0,0);controls.enableDamping=true;controls.minZoom=.5;controls.maxZoom=3.5;controls.enablePan=true;controls.screenSpacePanning=true;controls.panSpeed=1.3;controls.maxPolarAngle=Math.PI/2.1;configurePanMode();controls.update();raycaster=new THREE.Raycaster();mouse=new THREE.Vector2();let start;renderer.domElement.addEventListener('contextmenu',e=>e.preventDefault());renderer.domElement.addEventListener('pointerdown',e=>start=e.button===0?[e.clientX,e.clientY]:null);renderer.domElement.addEventListener('pointerup',e=>{if(e.button!==0||!start||Math.hypot(start[0]-e.clientX,start[1]-e.clientY)>5)return;const r=renderer.domElement.getBoundingClientRect();mouse.set((e.clientX-r.left)/r.width*2-1,-(e.clientY-r.top)/r.height*2+1);raycaster.setFromCamera(mouse,camera);let hits=raycaster.intersectObjects(meshes,false);if(hits.length)select(hits[0].object.userData.pickId)});new ResizeObserver(resize).observe(el('scene'));resize();buildRoom();function animate(){requestAnimationFrame(animate);if(mode==='3d'){animateAvatars(Math.min(clock.getDelta(),.05));controls.update();updateWorldLabels();renderer.render(scene,camera)}else{clock.getDelta()}}animate()}
+
+
+
+const deviceListFilters={query:'',status:'all',type:'all',sort:'default'};
+function setupDeviceListFilters(){
+ const changes=[['deviceSearch','query','input'],['deviceStatusFilter','status','change'],['deviceTypeFilter','type','change'],['deviceSort','sort','change']];
+ for(const [id,key,eventName] of changes)el(id).addEventListener(eventName,()=>{deviceListFilters[key]=el(id).value;if(mode==='list')renderDeviceList()});
+ el('deviceFilterReset').addEventListener('click',()=>{Object.assign(deviceListFilters,{query:'',status:'all',type:'all',sort:'default'});for(const [id,key] of changes)el(id).value=deviceListFilters[key];if(mode==='list')renderDeviceList()});
+}
+function renderDeviceList(){
+ if(!data?.objects)return;
+ const root=el('deviceTableBody');root.replaceChildren();el('deviceListFloor').textContent=floor;
+ const counts={online:0,offline:0,unknown:0},order={user:0,ap:1,printer:2,server:3};
+ const query=deviceListFilters.query.toLocaleLowerCase('id').trim(),statusFilter=deviceListFilters.status,typeFilter=deviceListFilters.type;
+ const list=data.objects.filter(o=>{
+  const status=effectiveStatus(o);
+  if(statusFilter!=='all'&&status!==statusFilter)return false;
+  if(typeFilter!=='all'&&o.type!==typeFilter)return false;
+  if(!query)return true;
+  return [o.id,o.name,o.hostname,o.ip,o.anydeskId,o.haEntityId,o.device,o.type,nice(o),status].some(v=>String(v??'').toLocaleLowerCase('id').includes(query));
+ }).sort((a,b)=>{
+  const sort=deviceListFilters.sort;
+  if(sort==='name')return String(nice(a)).localeCompare(String(nice(b)),'id',{numeric:true});
+  if(sort==='status'){const ranks={online:0,offline:1,unknown:2},cmp=(ranks[effectiveStatus(a)]??2)-(ranks[effectiveStatus(b)]??2);if(cmp)return cmp;}
+  if(sort==='ip'){
+   const oct=v=>String(v||'').split('.').map(Number),x=oct(a.ip),y=oct(b.ip);
+   if(x.length===4&&y.length===4&&x.every(n=>n>=0&&n<=255)&&y.every(n=>n>=0&&n<=255)){for(let i=0;i<4;i++)if(x[i]!==y[i])return x[i]-y[i];}
+   else {const cmp=String(a.ip||'').localeCompare(String(b.ip||''),'id',{numeric:true});if(cmp)return cmp;}
+  }
+  return (order[a.type]??4)-(order[b.type]??4)||String(a.id).localeCompare(String(b.id),'id',{numeric:true});
+ });
+ const cells=(tr,arr)=>arr.forEach(v=>{const td=document.createElement('td');td.textContent=String(v??'—');tr.append(td)});
+ for(const o of list){
+  const status=effectiveStatus(o);counts[status]=(counts[status]||0)+1;
+  const tr=document.createElement('tr');tr.classList.toggle('selected',o.id===selected);
+  tr.tabIndex=0;tr.setAttribute('aria-label','Buka detail '+nice(o));
+  const statusCell=document.createElement('td'),pill=document.createElement('span');pill.className='device-state '+(status==='online'||status==='offline'?status:'unknown');
+  pill.textContent=(status==='online'?'● Online':status==='offline'?'● Offline':'● Unknown');statusCell.append(pill);tr.append(statusCell);
+  const typeLabel={user:((o.device||'PC')+' / Workstation'),ap:'Access Point',printer:'Printer',server:'Server'}[o.type]||o.type;
+  cells(tr,[o.id,nice(o),typeLabel,o.haEntityId||(o.hostname||'—'),o.ip||'—']);
+  const last=document.createElement('td'),btn=document.createElement('button');btn.textContent='Lihat Detail →';btn.type='button';
+  btn.onclick=e=>{e.stopPropagation();openDeviceListDetail(o.id)};last.append(btn);tr.append(last);
+  tr.onclick=()=>openDeviceListDetail(o.id);tr.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openDeviceListDetail(o.id)}};root.append(tr);
+ }
+ if(!list.length){const tr=document.createElement('tr'),td=document.createElement('td');td.colSpan=7;td.className='device-list-no-results';td.textContent='Tidak ada perangkat yang cocok dengan pencarian atau filter.';tr.append(td);root.append(tr);}
+ el('deviceFilteredCount').textContent='Menampilkan '+list.length+' dari '+data.objects.length+' perangkat';
+ el('deviceListSummary').replaceChildren();
+ for(const [label,num] of [['Hasil',list.length],['Online',counts.online],['Offline',counts.offline],['Unknown',counts.unknown]]){
+  const item=document.createElement('span');item.textContent=label+': '+num;el('deviceListSummary').append(item);
+ }
+}
+function openDeviceListDetail(id){
+ select(id);
+ const layout=document.querySelector('.layout');if(layout)layout.classList.remove('detail-closed');
+ el('detailSidebar').classList.remove('hide');
+ const button=el('openDetail');if(button)button.classList.add('hide');
+}
+
+// Startup restored after removing the obsolete 2D Arcade renderer.
+setupDeviceListFilters();refreshSpacing();refreshAreaEditor();refreshList();refreshPins();select(null);init();fetchLiveStatus();fetchHAStatus();
+</script></body></html>

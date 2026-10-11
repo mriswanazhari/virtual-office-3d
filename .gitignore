@@ -1,0 +1,40 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Credentials & secrets
+.env
+.env.*
+!.env.example
+*auth.json
+admin-token
+ksc.json
+ha.json
+ksc.env
+*.key
+*.pem
+
+# Database produksi
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+
+# Logs
+*.log
+logs/
+
+# Backup dan archive
+*.bak
+*.backup
+*.zip
+*.tar.gz
+
+# OS & Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

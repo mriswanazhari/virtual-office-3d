@@ -1,0 +1,7 @@
+{
+  "server_url": "https://192.168.10:13299",
+  "cert_file": "C:\\KSC-API\\klserver.cer",
+  "filter": "",
+  "max_hosts": 3000,
+  "poll_seconds": 60
+}
