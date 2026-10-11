@@ -292,7 +292,7 @@ nano /var/lib/virtual-office/ksc.json
 
 ```json
 {
-  "server_url": "https://10.126.200.52:13299",
+  "server_url": "https://IPSERVERKSC:13299",
   "cert_file": "/etc/virtual-office/klserver.cer",
   "filter": "",
   "max_hosts": 3000,
