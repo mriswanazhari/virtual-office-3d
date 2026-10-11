@@ -104,7 +104,8 @@ Browser Operator (Admin/Viewer; Three.js)
          Nginx :8088
                 |
      Python Backend :8080
-          /           \n    SQLite / Auth    KSC + Home Assistant
+          /           \
+    SQLite / Auth    KSC + Home Assistant
 ```
 
 | Path | Fungsi |
